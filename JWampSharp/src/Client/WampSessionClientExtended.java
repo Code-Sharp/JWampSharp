@@ -3,6 +3,7 @@ package Client;
 import Client.Realm.WampRealmProxy;
 import Core.Contracts.Session.WampSessionClient;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
@@ -13,9 +14,9 @@ public interface WampSessionClientExtended<TMessage> extends WampSessionClient<T
 
     WampRealmProxy getRealm();
 
-    Future getOpenTask();
+    CompletableFuture getOpenTask();
 
-    void OnConnectionOpen();
+    void onConnectionOpen();
 
-    void OnConnectionClosed();
+    void onConnectionClosed();
 }

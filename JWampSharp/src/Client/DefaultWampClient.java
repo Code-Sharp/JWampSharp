@@ -1,6 +1,7 @@
 package Client;
 
 import Client.Realm.WampRealmProxy;
+import Client.Session.SessionClient;
 import Core.Contracts.Error.WampError;
 import Core.Contracts.PubSub.WampPublisher;
 import Core.Contracts.PubSub.WampSubscriber;
@@ -8,12 +9,13 @@ import Core.Contracts.Rpc.WampCallee;
 import Core.Contracts.Rpc.WampCaller;
 import Core.Contracts.WampClient;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
  * Created by Elad on 16/04/2014.
  */
-public class DefaultWampClient<TMessage> implements WampClient<TMessage> {
+public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSessionClientExtended<TMessage> {
 
     private final WampRealmProxy realmProxy;
     private WampSessionClientExtended<TMessage> sessionClient;
@@ -25,6 +27,7 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage> {
 
     public DefaultWampClient(WampRealmProxyFactory<TMessage> realmProxyFactory) {
         realmProxy = realmProxyFactory.build(this);
+        sessionClient = new SessionClient<TMessage>(realmProxy);
     }
 
     // Properties
@@ -60,8 +63,8 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage> {
         getSessionClient().challenge(challenge, extra);
     }
 
-    public void OnConnectionClosed() {
-        getSessionClient().OnConnectionClosed();
+    public void onConnectionClosed() {
+        getSessionClient().onConnectionClosed();
     }
 
     public void welcome(long session, TMessage details) {
@@ -72,15 +75,15 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage> {
         getSessionClient().goodbye(details, reason);
     }
 
-    public void OnConnectionOpen() {
-        getSessionClient().OnConnectionOpen();
+    public void onConnectionOpen() {
+        getSessionClient().onConnectionOpen();
     }
 
     public void heartbeat(int incomingSeq, int outgoingSeq, String discard) {
         getSessionClient().heartbeat(incomingSeq, outgoingSeq, discard);
     }
 
-    public Future getOpenTask() {
+    public CompletableFuture getOpenTask() {
         return getSessionClient().getOpenTask();
     }
 

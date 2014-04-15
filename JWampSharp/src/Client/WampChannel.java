@@ -47,11 +47,11 @@ public class WampChannel<TMessage> {
     }
 
     private void onConnectionOpen(Object sender, EventArgs e) {
-        client.OnConnectionOpen();
+        client.onConnectionOpen();
     }
 
     private void onConnectionClosed(Object sender, EventArgs e) {
-        client.OnConnectionClosed();
+        client.onConnectionClosed();
     }
 
     public WampServerProxy getServer() {
