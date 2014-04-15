@@ -29,7 +29,6 @@ public abstract class JsonBinding<TMessage> extends WampBindingBase<TMessage> im
         return result;
     }
 
-
     @Override
     public WampMessage parse(String message) {
         return parser.Parse(message);
