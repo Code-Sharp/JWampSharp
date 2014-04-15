@@ -33,7 +33,7 @@ public class SessionClient<TMessage> implements WampSessionClientExtended<TMessa
     }
 
     @Override
-    public CompletableFuture getOpenTask() {
+    public java.util.concurrent.CompletionStage getOpenTask() {
         return openTask;
     }
 

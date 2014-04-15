@@ -6,7 +6,7 @@ import Core.Listener.ControlledWampConnection;
 import Core.Utilities.EventArgs;
 import Core.Utilities.EventListener;
 
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -62,7 +62,7 @@ public class WampChannel<TMessage> {
         return client.getRealm();
     }
 
-    public Future open() throws Exception {
+    public CompletionStage open() throws Exception {
         if (!connectCalled.compareAndSet(false, true)) {
             // Throw something that says that "open was already called."
             throw new Exception();

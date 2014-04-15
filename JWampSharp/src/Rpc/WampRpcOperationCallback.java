@@ -1,4 +1,4 @@
-package Client.Rpc;
+package Rpc;
 
 /**
  * Created by Elad on 15/04/2014.

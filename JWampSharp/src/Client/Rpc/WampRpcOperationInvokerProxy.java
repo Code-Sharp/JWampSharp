@@ -1,5 +1,7 @@
 package Client.Rpc;
 
+import Rpc.WampRpcOperationCallback;
+
 /**
  * Created by Elad on 15/04/2014.
  */

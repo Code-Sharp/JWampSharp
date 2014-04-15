@@ -43,9 +43,12 @@ public abstract class WampChannelFactory<TMessage> {
         @Override
         public WampRealmProxy build(DefaultWampClient<TMessage> client) {
             WampServerProxy serverProxy = parent.builder.Create(client, connection);
-            return new DefaultRealmProxy(this.realmName,
+
+            DefaultRealmProxy result = new DefaultRealmProxy<TMessage>(this.realmName,
                     serverProxy,
                     parent.binding);
+
+            return result;
         }
     }
 }

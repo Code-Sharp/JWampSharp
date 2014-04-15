@@ -1,5 +1,7 @@
 package Client.Rpc;
 
+import Rpc.WampRpcOperation;
+
 import java.util.concurrent.Future;
 
 /**

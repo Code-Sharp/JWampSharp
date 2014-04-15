@@ -9,8 +9,7 @@ import Core.Contracts.Rpc.WampCallee;
 import Core.Contracts.Rpc.WampCaller;
 import Core.Contracts.WampClient;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletionStage;
 
 /**
  * Created by Elad on 16/04/2014.
@@ -83,7 +82,7 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSe
         getSessionClient().heartbeat(incomingSeq, outgoingSeq, discard);
     }
 
-    public CompletableFuture getOpenTask() {
+    public CompletionStage getOpenTask() {
         return getSessionClient().getOpenTask();
     }
 

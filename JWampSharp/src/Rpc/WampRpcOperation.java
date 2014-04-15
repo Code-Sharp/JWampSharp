@@ -1,4 +1,4 @@
-package Client.Rpc;
+package Rpc;
 
 import Core.Serialization.WampFormatter;
 

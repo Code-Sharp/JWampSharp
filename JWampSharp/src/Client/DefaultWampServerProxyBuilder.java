@@ -34,7 +34,7 @@ public class DefaultWampServerProxyBuilder<TMessage> implements WampServerProxyB
     private class WampServerProxyImpl extends DefaultWampServerProxy<TMessage> {
         private final WampClient<TMessage> client;
         private final WampConnection<TMessage> connection;
-        private final WampClientIncomingMessageHandler handler;
+        private final WampClientIncomingMessageHandler<TMessage> handler;
         private final EventListener<WampMessageArrivedEventArgs<TMessage>> listener;
 
         public WampServerProxyImpl(WampClient<TMessage> client, WampConnection<TMessage> connection,
@@ -47,7 +47,7 @@ public class DefaultWampServerProxyBuilder<TMessage> implements WampServerProxyB
             this.connection = connection;
 
             this.handler =
-                    new DefaultWampClientIncomingMessageHandler
+                    new DefaultWampClientIncomingMessageHandler<TMessage>
                     (underlyingMessageType, underlyingMessageTypeArray, binding.getFormatter(), client);
 
             listener = new EventListener<WampMessageArrivedEventArgs<TMessage>>() {
