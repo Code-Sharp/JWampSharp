@@ -5,7 +5,7 @@ import Core.Contracts.WampServerProxy;
 import Core.Dispatch.DefaultWampClientIncomingMessageHandler;
 import Core.Dispatch.WampClientIncomingMessageHandler;
 import Core.Listener.EventArgs.WampMessageArrivedEventArgs;
-import Core.Listener.WampBinding;
+import Core.Binding.WampBinding;
 import Core.Listener.WampConnection;
 import Core.Proxy.DefaultWampServerProxy;
 import Core.Proxy.WampProtocol;

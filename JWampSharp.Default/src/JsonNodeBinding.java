@@ -1,3 +1,4 @@
+import Core.Binding.Contracts.JsonBinding;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**

@@ -1,4 +1,4 @@
-package Core.Listener;
+package Core.Binding;
 
 import Core.Message.WampMessage;
 import Core.Serialization.WampFormatter;

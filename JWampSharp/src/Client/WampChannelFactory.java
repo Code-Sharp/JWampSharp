@@ -4,7 +4,7 @@ import Client.Realm.DefaultRealmProxy;
 import Client.Realm.WampRealmProxy;
 import Core.Contracts.WampServerProxy;
 import Core.Listener.ControlledWampConnection;
-import Core.Listener.WampBinding;
+import Core.Binding.WampBinding;
 
 /**
  * Created by Elad on 16/04/2014.

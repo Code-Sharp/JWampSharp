@@ -1,11 +1,10 @@
 package Client.Realm;
 
 import Client.PubSub.WampTopicContainerProxy;
-import Client.Realm.WampRealmProxy;
 import Client.Rpc.DefaultWampRpcOperationCatalogProxy;
 import Client.Rpc.WampRpcOperationCatalogProxy;
 import Core.Contracts.WampServerProxy;
-import Core.Listener.WampBinding;
+import Core.Binding.WampBinding;
 
 /**
  * Created by Elad on 16/04/2014.

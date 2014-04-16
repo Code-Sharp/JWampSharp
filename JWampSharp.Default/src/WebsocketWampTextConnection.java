@@ -1,7 +1,7 @@
 import Core.Listener.ControlledWampConnection;
 import Core.Listener.EventArgs.WampConnectionErrorEventArgs;
 import Core.Listener.EventArgs.WampMessageArrivedEventArgs;
-import Core.Listener.WampTextBinding;
+import Core.Binding.WampTextBinding;
 import Core.Message.WampMessage;
 import Core.Utilities.EventArgs;
 import Core.Utilities.EventHandlerImpl;
@@ -35,8 +35,8 @@ public class WebsocketWampTextConnection<TMessage> implements ControlledWampConn
 
     @Override
     public void send(WampMessage<TMessage> message) {
-        TextMessage<TMessage> textMessage = (TextMessage<TMessage>) binding.getRawMessage(message);
-        socket.send(textMessage.getText());
+        String raw = this.binding.format(message);
+        socket.send(raw);
     }
 
     @Override

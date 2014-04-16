@@ -1,3 +1,4 @@
+import Core.Binding.WampTextMessageParser;
 import Core.Message.WampMessage;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,7 +14,7 @@ import java.util.Iterator;
 /**
  * Created by Elad on 15/04/2014.
  */
-public class JsonNodeMessageParser implements Core.Serialization.WampTextMessageParser<com.fasterxml.jackson.databind.JsonNode> {
+public class JsonNodeMessageParser implements WampTextMessageParser<JsonNode> {
     private final JsonFactory jsonFactory;
     private ObjectMapper mapper;
 
@@ -23,7 +24,7 @@ public class JsonNodeMessageParser implements Core.Serialization.WampTextMessage
     }
 
     @Override
-    public WampMessage<JsonNode> Parse(String text) {
+    public WampMessage<JsonNode> parse(String text) {
         try {
             JsonNode node = mapper.readTree(text);
 
@@ -61,7 +62,7 @@ public class JsonNodeMessageParser implements Core.Serialization.WampTextMessage
     }
 
     @Override
-    public String Format(WampMessage<JsonNode> message) {
+    public String format(WampMessage<JsonNode> message) {
 
         try {
             JsonNode[] arguments = message.getArguments();

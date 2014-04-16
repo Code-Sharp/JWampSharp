@@ -1,4 +1,4 @@
-package Core.Serialization;
+package Core.Binding;
 
 import Core.Message.WampMessage;
 
@@ -6,7 +6,7 @@ import Core.Message.WampMessage;
  * Created by Elad on 15/04/2014.
  */
 public interface WampTextMessageParser<TMessage> {
-    WampMessage<TMessage> Parse(String text);
+    WampMessage<TMessage> parse(String text);
 
-    String Format(WampMessage<TMessage> message);
+    String format(WampMessage<TMessage> message);
 }

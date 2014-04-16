@@ -1,5 +1,4 @@
 import Client.WampChannelFactory;
-import Core.Listener.WampBinding;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
