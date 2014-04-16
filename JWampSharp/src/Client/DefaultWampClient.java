@@ -18,7 +18,6 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSe
 
     private final WampRealmProxy realmProxy;
     private WampSessionClientExtended<TMessage> sessionClient;
-    private WampCallee<TMessage> callee;
     private WampCaller<TMessage> caller;
     private WampPublisher<TMessage> publisher;
     private WampSubscriber<TMessage> subscriber;
@@ -35,7 +34,7 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSe
     }
 
     private WampCallee<TMessage> getCallee() {
-        return callee;
+        return (WampCallee<TMessage>)realmProxy.getRpcCatalog();
     }
 
     private WampCaller<TMessage> getCaller() {

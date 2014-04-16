@@ -15,7 +15,7 @@ public class SessionClient<TMessage> implements WampSessionClientExtended<TMessa
     private final WampRealmProxy realm;
     private WampServerProxy serverProxy;
     private long session;
-    private CompletableFuture<Boolean> openTask;
+    private final CompletableFuture<Boolean> openTask = new CompletableFuture<Boolean>();
 
     public SessionClient(WampRealmProxy realm) {
         this.realm = realm;
