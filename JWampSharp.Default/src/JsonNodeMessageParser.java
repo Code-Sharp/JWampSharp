@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 
 import java.io.StringWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -27,17 +28,15 @@ public class JsonNodeMessageParser implements WampTextMessageParser<JsonNode> {
     public WampMessage<JsonNode> parse(String text) {
         try {
             JsonNode node = mapper.readTree(text);
+            JsonNode[] array = mapper.treeToValue(node, JsonNode[].class);
 
-            Iterator<JsonNode> iterator = node.elements();
+            int messageType = array[0].asInt();
 
-            JsonNode messageTypeNode = iterator.next();
+            JsonNode[] arguments = new JsonNode[array.length - 1];
 
-            int messageType = messageTypeNode.asInt();
+            System.arraycopy(array, 1, arguments, 0, array.length - 1);
 
-            JsonNode[] arguments = getArguments(iterator);
-
-            WampMessage<JsonNode> result =
-                    new WampMessage<JsonNode>();
+            WampMessage<JsonNode> result = new WampMessage<JsonNode>();
 
             result.setMessageType(messageType);
             result.setArguments(arguments);
@@ -48,30 +47,16 @@ public class JsonNodeMessageParser implements WampTextMessageParser<JsonNode> {
         }
     }
 
-    private JsonNode[] getArguments(Iterator<JsonNode> iterator) {
-        ArrayList<JsonNode> arguments = new ArrayList<JsonNode>();
-
-        while (iterator.hasNext()) {
-            JsonNode currentNode = iterator.next();
-            arguments.add(currentNode);
-        }
-
-        JsonNode[] result = new JsonNode[arguments.size()];
-
-        return arguments.toArray(result);
-    }
-
     @Override
     public String format(WampMessage<JsonNode> message) {
 
         try {
             JsonNode[] arguments = message.getArguments();
-            ArrayList<JsonNode> array = new ArrayList<JsonNode>(arguments.length + 1);
-            array.add(new IntNode(message.getMessageType()));
-            Collections.addAll(array, arguments);
+            JsonNode[] array = new JsonNode[arguments.length + 1];
+            System.arraycopy(arguments, 0, array, 1, arguments.length);
+            array[0] = new IntNode(message.getMessageType());
 
-            ArrayNode node = mapper.createArrayNode();
-            node.addAll(array);
+            JsonNode node = mapper.valueToTree(array);
 
             StringWriter stringWriter = new StringWriter();
             mapper.writeTree(jsonFactory.createGenerator(stringWriter), node);
