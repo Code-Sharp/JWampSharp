@@ -1,4 +1,4 @@
-package Client.Rpc;
+package Client.Rpc.Callee;
 
 import Core.Contracts.Rpc.WampCallee;
 import Core.Contracts.WampServerProxy;

@@ -1,6 +1,9 @@
 package Client.Rpc;
 
+import Client.Rpc.Callee.WampClientCallee;
+import Client.Rpc.Caller.WampClientCaller;
 import Core.Contracts.Rpc.WampCallee;
+import Core.Contracts.Rpc.WampCaller;
 import Core.Contracts.WampServerProxy;
 import Core.Serialization.WampFormatter;
 import Rpc.WampRpcOperation;
@@ -11,12 +14,45 @@ import java.util.concurrent.CompletionStage;
 /**
  * Created by Elad on 16/04/2014.
  */
-public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOperationCatalogProxy, WampCallee<TMessage> {
+public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOperationCatalogProxy, WampCallee<TMessage>, WampCaller<TMessage> {
 
     private WampClientCallee<TMessage> callee;
 
+    @Override
+    public void result(long requestId, TMessage details, TMessage[] arguments, TMessage argumentsKeywords) {
+        caller.result(requestId, details, arguments, argumentsKeywords);
+    }
+
+    @Override
+    public void result(long requestId, TMessage details, TMessage[] arguments) {
+        caller.result(requestId, details, arguments);
+    }
+
+    @Override
+    public void result(long requestId, TMessage details) {
+        caller.result(requestId, details);
+    }
+
+    @Override
+    public void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords) {
+        this.caller.invoke(caller, options, procedure, arguments, argumentsKeywords);
+    }
+
+    @Override
+    public void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments) {
+        this.caller.invoke(caller, options, procedure, arguments);
+    }
+
+    @Override
+    public void invoke(WampRpcOperationCallback caller, Object options, String procedure) {
+        this.caller.invoke(caller, options, procedure);
+    }
+
+    private WampClientCaller<TMessage> caller;
+
     public DefaultWampRpcOperationCatalogProxy(WampServerProxy proxy, WampFormatter<TMessage> formatter) {
         this.callee = new WampClientCallee<TMessage>(proxy, formatter);
+        this.caller = new WampClientCaller<TMessage>(proxy);
     }
 
     @Override
@@ -57,20 +93,5 @@ public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOpe
     @Override
     public void interrupt(long requestId, TMessage options) {
         callee.interrupt(requestId, options);
-    }
-
-    @Override
-    public void invoke(WampRpcOperationCallback caller, Object options, String procedure) {
-
-    }
-
-    @Override
-    public void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments) {
-
-    }
-
-    @Override
-    public void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords) {
-
     }
 }

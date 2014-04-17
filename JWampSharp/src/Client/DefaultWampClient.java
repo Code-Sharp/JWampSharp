@@ -38,7 +38,7 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSe
     }
 
     private WampCaller<TMessage> getCaller() {
-        return caller;
+        return (WampCaller<TMessage>)realmProxy.getRpcCatalog();
     }
 
     private WampPublisher<TMessage> getPublisher() {

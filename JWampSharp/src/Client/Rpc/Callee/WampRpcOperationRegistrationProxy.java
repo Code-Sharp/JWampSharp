@@ -1,4 +1,4 @@
-package Client.Rpc;
+package Client.Rpc.Callee;
 
 import Rpc.WampRpcOperation;
 

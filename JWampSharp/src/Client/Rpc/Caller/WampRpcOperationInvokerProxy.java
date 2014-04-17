@@ -1,4 +1,4 @@
-package Client.Rpc;
+package Client.Rpc.Caller;
 
 import Rpc.WampRpcOperationCallback;
 

@@ -41,41 +41,77 @@ public class Program {
             WampRpcOperationCatalogProxy rpcCatalog =
                     channel.getRealmProxy().getRpcCatalog();
 
-            rpcCatalog.register(new WampRpcOperation() {
-                @Override
-                public String getProcedure() {
-                    return "com.arguments.add2";
-                }
+            CompletionStage register = rpcCatalog.register(new WampRpcOperation() {
+                                                               @Override
+                                                               public String getProcedure() {
+                                                                   return "com.arguments.add2";
+                                                               }
 
-                @Override
-                public <TMessage> void invoke(WampRpcOperationCallback caller, WampFormatter<TMessage> formatter, TMessage details) {
-                }
+                                                               @Override
+                                                               public <TMessage> void invoke(WampRpcOperationCallback caller, WampFormatter<TMessage> formatter, TMessage details) {
+                                                               }
 
-                @Override
-                public <TMessage> void invoke(WampRpcOperationCallback caller, WampFormatter<TMessage> formatter, TMessage options, TMessage[] arguments) {
-                    int number1 = formatter.deserialize(Integer.class, arguments[0]);
-                    int number2 = formatter.deserialize(Integer.class, arguments[1]);
-                    caller.result(new HashMap<String,String>(), new Object[]{number1+number2});
-                }
+                                                               @Override
+                                                               public <TMessage> void invoke(WampRpcOperationCallback caller, WampFormatter<TMessage> formatter, TMessage options, TMessage[] arguments) {
+                                                                   int number1 = formatter.deserialize(Integer.class, arguments[0]);
+                                                                   int number2 = formatter.deserialize(Integer.class, arguments[1]);
+                                                                   caller.result(new HashMap<String, String>(), new Object[]{number1 + number2});
+                                                               }
 
-                @Override
-                public <TMessage> void invoke(WampRpcOperationCallback caller, WampFormatter<TMessage> formatter, TMessage options, TMessage[] arguments, TMessage argumentsKeywords) {
+                                                               @Override
+                                                               public <TMessage> void invoke(WampRpcOperationCallback caller, WampFormatter<TMessage> formatter, TMessage options, TMessage[] arguments, TMessage argumentsKeywords) {
 
-                }
-            },
-            new HashMap<String,String>());
+                                                               }
+                                                           },
+                    new HashMap<String, String>()
+            );
 
-        }
-        catch (Exception ex) {
+            Object result =
+                    register.toCompletableFuture().get();
+
+            rpcCatalog.invoke(new WampRpcOperationCallback() {
+                                  @Override
+                                  public void result(Object details) {
+
+                                  }
+
+                                  @Override
+                                  public void result(Object details, Object[] arguments) {
+
+                                  }
+
+                                  @Override
+                                  public void result(Object details, Object[] arguments, Object argumentsKeywords) {
+
+                                  }
+
+                                  @Override
+                                  public void error(Object details, String error) {
+
+                                  }
+
+                                  @Override
+                                  public void error(Object details, String error, Object[] arguments) {
+
+                                  }
+
+                                  @Override
+                                  public void error(Object details, String error, Object[] arguments, Object argumentsKeywords) {
+
+                                  }
+                              }, new HashMap<String, String>(),
+                    "com.arguments.add2",
+                    new Object[]{2, 4}
+            );
+
+        } catch (Exception ex) {
             System.out.println(ex);
         }
 
-        while (true){
+        while (true) {
             try {
                 System.in.read();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
             }
         }
