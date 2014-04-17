@@ -9,3 +9,5 @@ Currently still in development. See examples in TestConsole project.
 
 [WampLink]:http://wamp.ws
 [WampSharpLink]:https://github.com/darkl/WampSharp/
+
+Want to help? see issues and contribute a commit!
