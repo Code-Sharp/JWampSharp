@@ -1,6 +1,7 @@
 package Client.PubSub;
 
 import java.io.Closeable;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Future;
 
 /**
@@ -9,9 +10,9 @@ import java.util.concurrent.Future;
 public interface WampTopicProxy {
     String getTopicUri();
 
-    Future<Long> publish(Object options, Object[] arguments, Object argumentKeywords);
-    Future<Long> publish(Object options);
-    Future<Long> publish(Object options, Object[] arguments);
+    CompletionStage<Long> publish(Object options, Object[] arguments, Object argumentKeywords);
+    CompletionStage<Long> publish(Object options);
+    CompletionStage<Long> publish(Object options, Object[] arguments);
 
-    Future<Closeable> Subscribe(WampTopicSubscriber subscriber, Object options);
+    CompletionStage<Closeable> Subscribe(WampTopicSubscriber subscriber, Object options);
 }
