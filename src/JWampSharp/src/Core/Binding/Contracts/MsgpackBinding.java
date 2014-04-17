@@ -17,10 +17,10 @@ public class MsgpackBinding<TMessage> extends WampBindingBase<TMessage> implemen
 
     @Override
     public WampMessage<TMessage> getRawMessage(WampMessage<TMessage> message) {
-        return getRawTextMessage(message);
+        return getRawBinaryMessage(message);
     }
 
-    private BinaryMessage<TMessage> getRawTextMessage(WampMessage<TMessage> message) {
+    private BinaryMessage<TMessage> getRawBinaryMessage(WampMessage<TMessage> message) {
         BinaryMessage<TMessage> result;
 
         if (message instanceof BinaryMessage) {
@@ -40,7 +40,7 @@ public class MsgpackBinding<TMessage> extends WampBindingBase<TMessage> implemen
 
     @Override
     public byte[] format(WampMessage<TMessage> message) {
-        BinaryMessage<TMessage> rawMessage = getRawTextMessage(message);
+        BinaryMessage<TMessage> rawMessage = getRawBinaryMessage(message);
         return rawMessage.getBytes();
     }
 

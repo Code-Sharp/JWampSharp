@@ -79,7 +79,7 @@ public abstract class WebsocketWampConnection<TMessage> implements ControlledWam
         socket.send(bytes);
     }
 
-    public void raiseMessageArrived(WampMessage<TMessage> parsed) {
+    protected void raiseMessageArrived(WampMessage<TMessage> parsed) {
         messageArrived.raiseEvent(this, new WampMessageArrivedEventArgs<TMessage>(parsed));
     }
 
