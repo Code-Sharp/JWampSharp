@@ -1,10 +1,12 @@
 package Client.Realm;
 
+import Client.PubSub.DefaultWampTopicContainerProxy;
 import Client.PubSub.WampTopicContainerProxy;
 import Client.Rpc.DefaultWampRpcOperationCatalogProxy;
 import Client.Rpc.WampRpcOperationCatalogProxy;
 import Core.Contracts.WampServerProxy;
 import Core.Binding.WampBinding;
+import Core.Serialization.WampFormatter;
 
 /**
  * Created by Elad on 16/04/2014.
@@ -14,12 +16,15 @@ public class DefaultRealmProxy<TMessage> implements WampRealmProxy {
     private final WampServerProxy proxy;
     private final WampBinding<TMessage> binding;
     private final WampRpcOperationCatalogProxy rpcCatalog;
+    private final WampTopicContainerProxy topicContainer;
 
     public DefaultRealmProxy(String name, WampServerProxy proxy, WampBinding<TMessage> binding) {
         this.name = name;
         this.proxy = proxy;
         this.binding = binding;
-        rpcCatalog = new DefaultWampRpcOperationCatalogProxy<TMessage>(proxy, binding.getFormatter());
+        WampFormatter<TMessage> formatter = binding.getFormatter();
+        rpcCatalog = new DefaultWampRpcOperationCatalogProxy<TMessage>(proxy, formatter);
+        topicContainer = new DefaultWampTopicContainerProxy(proxy, formatter);
     }
 
     @Override
@@ -29,7 +34,7 @@ public class DefaultRealmProxy<TMessage> implements WampRealmProxy {
 
     @Override
     public WampTopicContainerProxy getTopicContainer() {
-        return null;
+        return this.topicContainer;
     }
 
     @Override

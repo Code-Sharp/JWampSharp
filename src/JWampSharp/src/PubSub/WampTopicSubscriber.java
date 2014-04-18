@@ -1,4 +1,4 @@
-package Client.PubSub;
+package PubSub;
 
 /**
  * Created by Elad on 15/04/2014.

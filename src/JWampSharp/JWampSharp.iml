@@ -7,6 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="com.netflix.rxjava:rxjava-core:0.14.3" level="project" />
   </component>
 </module>
 

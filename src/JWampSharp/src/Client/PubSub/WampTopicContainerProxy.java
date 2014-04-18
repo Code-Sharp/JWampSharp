@@ -6,3 +6,4 @@ package Client.PubSub;
 public interface WampTopicContainerProxy {
     WampTopicProxy getTopic(String topicUri);
 }
+

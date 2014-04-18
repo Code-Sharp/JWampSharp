@@ -19,8 +19,6 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSe
     private final WampRealmProxy realmProxy;
     private WampSessionClientExtended<TMessage> sessionClient;
     private WampCaller<TMessage> caller;
-    private WampPublisher<TMessage> publisher;
-    private WampSubscriber<TMessage> subscriber;
     private WampError<TMessage> error;
 
     public DefaultWampClient(WampRealmProxyFactory<TMessage> realmProxyFactory) {
@@ -42,11 +40,11 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSe
     }
 
     private WampPublisher<TMessage> getPublisher() {
-        return publisher;
+        return (WampPublisher<TMessage>)realmProxy.getTopicContainer();
     }
 
     private WampSubscriber<TMessage> getSubscriber() {
-        return subscriber;
+        return (WampSubscriber<TMessage>)realmProxy.getTopicContainer();
     }
 
     private WampError<TMessage> getError() {

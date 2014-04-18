@@ -1,9 +1,7 @@
-import Client.Rpc.WampRawRpcOperationCallback;
-import Client.Rpc.WampRpcOperationCatalogProxy;
+import Client.PubSub.WampRawTopicSubscriber;
+import Client.Realm.WampRealmProxy;
 import Client.WampChannel;
 import Core.Serialization.WampFormatter;
-import Rpc.WampRpcOperation;
-import Rpc.WampRpcOperationCallback;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.net.URI;
@@ -28,8 +26,30 @@ public class Program {
             Object o =
                     open.toCompletableFuture().get();
 
+            WampRealmProxy realmProxy = channel.getRealmProxy();
+
+            realmProxy.getTopicContainer().getTopic("com.myapp.topic2")
+                    .subscribe(new WampRawTopicSubscriber() {
+                        @Override
+                        public <TMessage> void event(WampFormatter<TMessage> formatter, long publicationId, TMessage details) {
+
+                        }
+
+                        @Override
+                        public <TMessage> void event(WampFormatter<TMessage> formatter, long publicationId, TMessage details, TMessage[] arguments) {
+
+                        }
+
+                        @Override
+                        public <TMessage> void event(WampFormatter<TMessage> formatter, long publicationId, TMessage details, TMessage[] arguments, TMessage argumentsKeywords) {
+
+                        }
+                    },
+                   new HashMap<String,String>());
+
+            /*
             WampRpcOperationCatalogProxy rpcCatalog =
-                    channel.getRealmProxy().getRpcCatalog();
+                    realmProxy.getRpcCatalog();
 
             CompletionStage register = rpcCatalog.register(new WampRpcOperation() {
                                                                @Override
@@ -93,6 +113,8 @@ public class Program {
                     "com.arguments.add2",
                     new Object[]{2, 4}
             );
+            */
+
 
         } catch (Exception ex) {
             System.out.println(ex);
