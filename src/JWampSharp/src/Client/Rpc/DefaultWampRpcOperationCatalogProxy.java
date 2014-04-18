@@ -15,6 +15,20 @@ import java.util.concurrent.CompletionStage;
  * Created by Elad on 16/04/2014.
  */
 public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOperationCatalogProxy, WampCallee<TMessage>, WampCaller<TMessage> {
+    @Override
+    public void invoke(WampRawRpcOperationCallback caller, Object options, String procedure) {
+        this.caller.invoke(caller, options, procedure);
+    }
+
+    @Override
+    public void invoke(WampRawRpcOperationCallback caller, Object options, String procedure, Object[] arguments) {
+        this.caller.invoke(caller, options, procedure, arguments);
+    }
+
+    @Override
+    public void invoke(WampRawRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords) {
+        this.caller.invoke(caller, options, procedure, arguments, argumentsKeywords);
+    }
 
     private WampClientCallee<TMessage> callee;
 
@@ -52,7 +66,7 @@ public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOpe
 
     public DefaultWampRpcOperationCatalogProxy(WampServerProxy proxy, WampFormatter<TMessage> formatter) {
         this.callee = new WampClientCallee<TMessage>(proxy, formatter);
-        this.caller = new WampClientCaller<TMessage>(proxy);
+        this.caller = new WampClientCaller<TMessage>(proxy, formatter);
     }
 
     @Override

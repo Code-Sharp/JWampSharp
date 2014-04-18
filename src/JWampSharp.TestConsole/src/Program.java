@@ -1,23 +1,13 @@
+import Client.Rpc.WampRawRpcOperationCallback;
 import Client.Rpc.WampRpcOperationCatalogProxy;
 import Client.WampChannel;
-import Core.Contracts.WampClient;
-import Core.Dispatch.DefaultWampClientIncomingMessageHandler;
-import Core.Listener.EventArgs.WampMessageArrivedEventArgs;
-import Core.Proxy.DefaultWampServerProxy;
-import Core.Proxy.WampProtocol;
 import Core.Serialization.WampFormatter;
-import Core.Utilities.EventArgs;
-import Core.Utilities.EventListener;
 import Rpc.WampRpcOperation;
 import Rpc.WampRpcOperationCallback;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.netty.util.concurrent.CompleteFuture;
 
 import java.net.URI;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
 /**
@@ -29,7 +19,7 @@ public class Program {
         try {
             JsonNodeChannelFactory factory = new JsonNodeChannelFactory();
 
-            WampChannel<JsonNode> channel = factory.createChannel("realm1", new WebsocketWampTextConnection<JsonNode>(new URI("ws://localhost:8080/ws"),
+            WampChannel<JsonNode> channel = factory.createChannel("realm1", new WebsocketWampTextConnection<JsonNode>(new URI("ws://localhost:9090/ws"),
                     factory.getBinding()));
 
 
@@ -69,34 +59,34 @@ public class Program {
             Object result =
                     register.toCompletableFuture().get();
 
-            rpcCatalog.invoke(new WampRpcOperationCallback() {
+            rpcCatalog.invoke(new WampRawRpcOperationCallback() {
                                   @Override
-                                  public void result(Object details) {
+                                  public <TMessage> void result(WampFormatter<TMessage> formatter, TMessage details) {
 
                                   }
 
                                   @Override
-                                  public void result(Object details, Object[] arguments) {
+                                  public <TMessage> void result(WampFormatter<TMessage> formatter, TMessage details, TMessage[] arguments) {
 
                                   }
 
                                   @Override
-                                  public void result(Object details, Object[] arguments, Object argumentsKeywords) {
+                                  public <TMessage> void result(WampFormatter<TMessage> formatter, TMessage details, TMessage[] arguments, TMessage argumentsKeywords) {
 
                                   }
 
                                   @Override
-                                  public void error(Object details, String error) {
+                                  public <TMessage> void error(WampFormatter<TMessage> formatter, TMessage details, String error) {
 
                                   }
 
                                   @Override
-                                  public void error(Object details, String error, Object[] arguments) {
+                                  public <TMessage> void error(WampFormatter<TMessage> formatter, TMessage details, String error, TMessage[] arguments) {
 
                                   }
 
                                   @Override
-                                  public void error(Object details, String error, Object[] arguments, Object argumentsKeywords) {
+                                  public <TMessage> void error(WampFormatter<TMessage> formatter, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
 
                                   }
                               }, new HashMap<String, String>(),

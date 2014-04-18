@@ -1,5 +1,6 @@
 package Client.Rpc.Caller;
 
+import Client.Rpc.WampRawRpcOperationCallback;
 import Rpc.WampRpcOperationCallback;
 
 /**
@@ -11,4 +12,11 @@ public interface WampRpcOperationInvokerProxy {
     void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments);
 
     void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords);
+
+    void invoke(WampRawRpcOperationCallback caller, Object options, String procedure);
+
+    void invoke(WampRawRpcOperationCallback caller, Object options, String procedure, Object[] arguments);
+
+    void invoke(WampRawRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords);
+
 }

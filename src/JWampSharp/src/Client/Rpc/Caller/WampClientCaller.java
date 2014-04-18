@@ -1,7 +1,9 @@
 package Client.Rpc.Caller;
 
+import Client.Rpc.WampRawRpcOperationCallback;
 import Core.Contracts.Rpc.WampCaller;
 import Core.Contracts.WampServerProxy;
+import Core.Serialization.WampFormatter;
 import Core.WampIdMapper;
 import Rpc.WampRpcOperationCallback;
 
@@ -11,27 +13,47 @@ import Rpc.WampRpcOperationCallback;
 public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampRpcOperationInvokerProxy {
     private final WampServerProxy proxy;
     private final WampIdMapper<CallDetails> pendingCalls = new WampIdMapper<CallDetails>();
+    private final WampFormatter<TMessage> formatter;
 
-    public WampClientCaller(WampServerProxy proxy) {
+    public WampClientCaller(WampServerProxy proxy, WampFormatter<TMessage> formatter) {
         this.proxy = proxy;
+        this.formatter = formatter;
     }
 
     @Override
     public void invoke(WampRpcOperationCallback caller, Object options, String procedure) {
+        RawCallbackAdpater adpater = new RawCallbackAdpater(caller);
+        invoke(adpater, options, procedure);
+    }
+
+    @Override
+    public void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments) {
+        RawCallbackAdpater adpater = new RawCallbackAdpater(caller);
+        invoke(adpater, options, procedure, arguments);
+    }
+
+    @Override
+    public void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords) {
+        RawCallbackAdpater adpater = new RawCallbackAdpater(caller);
+        invoke(adpater, options, procedure, arguments, argumentsKeywords);
+    }
+
+    @Override
+    public void invoke(WampRawRpcOperationCallback caller, Object options, String procedure) {
         CallDetails callDetails = new CallDetails(caller, options, procedure);
         long requestId = registerCall(callDetails);
         proxy.call(requestId, options, procedure);
     }
 
     @Override
-    public void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments) {
+    public void invoke(WampRawRpcOperationCallback caller, Object options, String procedure, Object[] arguments) {
         CallDetails callDetails = new CallDetails(caller, options, procedure, arguments);
         long requestId = registerCall(callDetails);
         proxy.call(requestId, options, procedure, arguments);
     }
 
     @Override
-    public void invoke(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords) {
+    public void invoke(WampRawRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords) {
         CallDetails callDetails = new CallDetails(caller, options, procedure, arguments, argumentsKeywords);
         long requestId = registerCall(callDetails);
         proxy.call(requestId, options, procedure, arguments, argumentsKeywords);
@@ -42,7 +64,7 @@ public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampRpc
         CallDetails callDetails = tryGetCallDetails(requestId);
 
         if (callDetails != null) {
-            callDetails.getCaller().result(details);
+            callDetails.getCaller().result(this.getFormatter(), details);
         }
     }
 
@@ -51,7 +73,7 @@ public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampRpc
         CallDetails callDetails = tryGetCallDetails(requestId);
 
         if (callDetails != null) {
-            callDetails.getCaller().result(details, arguments);
+            callDetails.getCaller().result(this.getFormatter(), details, arguments);
         }
     }
 
@@ -60,7 +82,7 @@ public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampRpc
         CallDetails callDetails = tryGetCallDetails(requestId);
 
         if (callDetails != null) {
-            callDetails.getCaller().result(details, arguments, argumentsKeywords);
+            callDetails.getCaller().result(this.getFormatter(), details, arguments, argumentsKeywords);
         }
     }
 
@@ -74,23 +96,27 @@ public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampRpc
         return pendingCalls.remove(requestId);
     }
 
+    private WampFormatter<TMessage> getFormatter() {
+        return formatter;
+    }
+
     private class CallDetails {
-        private final WampRpcOperationCallback caller;
+        private final WampRawRpcOperationCallback caller;
         private final Object options;
         private final String procedure;
         private final Object[] arguments;
         private final Object argumentsKeywords;
         private long requestId;
 
-        public CallDetails(WampRpcOperationCallback caller, Object options, String procedure) {
+        public CallDetails(WampRawRpcOperationCallback caller, Object options, String procedure) {
             this(caller, options, procedure, null);
         }
 
-        private CallDetails(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments) {
+        private CallDetails(WampRawRpcOperationCallback caller, Object options, String procedure, Object[] arguments) {
             this(caller, options, procedure, arguments, null);
         }
 
-        public CallDetails(WampRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords) {
+        public CallDetails(WampRawRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords) {
             this.caller = caller;
             this.options = options;
             this.procedure = procedure;
@@ -98,7 +124,7 @@ public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampRpc
             this.argumentsKeywords = argumentsKeywords;
         }
 
-        public WampRpcOperationCallback getCaller() {
+        public WampRawRpcOperationCallback getCaller() {
             return caller;
         }
 
@@ -124,6 +150,44 @@ public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampRpc
 
         public void setRequestId(long requestId) {
             this.requestId = requestId;
+        }
+    }
+
+    private class RawCallbackAdpater implements WampRawRpcOperationCallback {
+        private final WampRpcOperationCallback caller;
+
+        public RawCallbackAdpater(WampRpcOperationCallback caller) {
+            this.caller = caller;
+        }
+
+        @Override
+        public <TMessage> void result(WampFormatter<TMessage> formatter, TMessage details) {
+            this.caller.result(details);
+        }
+
+        @Override
+        public <TMessage> void result(WampFormatter<TMessage> formatter, TMessage details, TMessage[] arguments) {
+            this.caller.result(details, arguments);
+        }
+
+        @Override
+        public <TMessage> void result(WampFormatter<TMessage> formatter, TMessage details, TMessage[] arguments, TMessage argumentsKeywords) {
+            this.caller.result(details, arguments, argumentsKeywords);
+        }
+
+        @Override
+        public <TMessage> void error(WampFormatter<TMessage> formatter, TMessage details, String error) {
+            this.caller.error(details, error);
+        }
+
+        @Override
+        public <TMessage> void error(WampFormatter<TMessage> formatter, TMessage details, String error, TMessage[] arguments) {
+            this.caller.error(details, error, arguments);
+        }
+
+        @Override
+        public <TMessage> void error(WampFormatter<TMessage> formatter, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+            this.caller.error(details, error, arguments, argumentsKeywords);
         }
     }
 }
