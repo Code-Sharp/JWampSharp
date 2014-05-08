@@ -16,6 +16,7 @@ Master | Provider
 
 [WampLink]:http://wamp.ws
 [WampSharpLink]:https://github.com/darkl/WampSharp/
+[travis-ci]:https://travis-ci.org/
 
 How to build
 ==========
