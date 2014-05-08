@@ -1,7 +1,9 @@
-import Client.PubSub.WampRawTopicSubscriber;
-import Client.Realm.WampRealmProxy;
-import Client.WampChannel;
-import Core.Serialization.WampFormatter;
+import com.wampsharp.jwampsharp.defaultBinding.JsonNodeChannelFactory;
+import com.wampsharp.jwampsharp.defaultBinding.WebsocketWampTextConnection;
+import com.wampsharp.jwampsharp.client.pubSub.WampRawTopicSubscriber;
+import com.wampsharp.jwampsharp.client.realm.WampRealmProxy;
+import com.wampsharp.jwampsharp.client.WampChannel;
+import com.wampsharp.jwampsharp.core.serialization.WampFormatter;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.net.URI;

@@ -1,0 +1,40 @@
+package com.wampsharp.jwampsharp.defaultBinding;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * Created by Elad on 15/04/2014.
+ */
+public class JsonNodeFormatter implements com.wampsharp.jwampsharp.core.serialization.WampFormatter<com.fasterxml.jackson.databind.JsonNode> {
+    private final JsonFactory jsonFactory;
+    private final ObjectMapper mapper;
+
+    public JsonNodeFormatter() {
+        jsonFactory = new JsonFactory();
+        mapper = new ObjectMapper(jsonFactory);
+    }
+
+    @Override
+    public <TTarget> TTarget deserialize(Class<TTarget> type, JsonNode jsonNode) {
+        try {
+            TTarget result = this.mapper.treeToValue(jsonNode, type);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public Object deserializeWeak(Class type, JsonNode jsonNode) {
+        return null;
+    }
+
+    @Override
+    public JsonNode serialize(Object value) {
+        return mapper.valueToTree(value);
+    }
+}
