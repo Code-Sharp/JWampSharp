@@ -1,0 +1,5 @@
+rootProject.name = 'JWampSharp'
+include 'jwampsharp'
+
+include 'jwampsharp.defaultBinding'
+
