@@ -6,13 +6,13 @@ import com.wampsharp.jwampsharp.core.utilities.EventArgs;
  * Created by Elad on 15/04/2014.
  */
 public class WampConnectionErrorEventArgs extends EventArgs {
-    private final Exception exception;
+    private final Throwable throwable;
 
-    public WampConnectionErrorEventArgs(Exception exception) {
-        this.exception = exception;
+    public WampConnectionErrorEventArgs(Throwable throwable) {
+        this.throwable = throwable;
     }
 
-    public Exception getException() {
-        return exception;
+    public Throwable getThrowable() {
+        return throwable;
     }
 }
