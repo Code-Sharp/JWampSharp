@@ -109,7 +109,7 @@ public abstract class WebsocketWampConnection<TMessage> implements ControlledWam
         }
     }
 
-    private class WebSocketEndPoint extends Endpoint implements MessageHandler.Whole<String> {
+    private class WebSocketEndPoint extends Endpoint {
         private final WebsocketWampConnection<TMessage> parent;
         private MessageHandler.Whole<String> textMessageHandler;
         private MessageHandler.Whole<ByteBuffer> binaryMessageHandler;
@@ -138,18 +138,10 @@ public abstract class WebsocketWampConnection<TMessage> implements ControlledWam
         @Override
         public void onOpen(Session session, EndpointConfig config) {
             this.session = session;
+            session.addMessageHandler(this.textMessageHandler);
+            session.addMessageHandler(this.binaryMessageHandler);
             this.parent.onOpen(session, config);
-            session.addMessageHandler(this);
         }
-
-        public void onMessage(String message) {
-            this.parent.onMessage(message);
-        }
-
-        public void onMessage(ByteBuffer message) {
-            this.parent.onMessage(message);
-        }
-
 
         @Override
         public void onError(Session session, Throwable thr) {
