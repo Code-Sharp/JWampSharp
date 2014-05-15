@@ -1,5 +1,6 @@
 package com.wampsharp.jwampsharp.client.pubSub;
 
+import com.wampsharp.jwampsharp.core.contracts.error.WampPublisherError;
 import com.wampsharp.jwampsharp.core.contracts.pubSub.WampPublisher;
 
 import java.util.concurrent.CompletionStage;
@@ -7,7 +8,7 @@ import java.util.concurrent.CompletionStage;
 /**
  * Created by Elad on 18/04/2014.
  */
-public class WampPublisherClient<TMessage> implements WampPublisher<TMessage>, WampTopicPublicationProxy {
+public class WampPublisherClient<TMessage> implements WampPublisher<TMessage>, WampPublisherError<TMessage>, WampTopicPublicationProxy {
     @Override
     public void published(long requestId, long publicationId) {
 
@@ -26,5 +27,20 @@ public class WampPublisherClient<TMessage> implements WampPublisher<TMessage>, W
     @Override
     public CompletionStage<Long> publish(String topicUri, Object options, Object[] arguments, Object argumentKeywords) {
         return null;
+    }
+
+    @Override
+    public void publishError(long requestId, TMessage details, String error) {
+
+    }
+
+    @Override
+    public void publishError(long requestId, TMessage details, String error, TMessage[] arguments) {
+
+    }
+
+    @Override
+    public void publishError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+
     }
 }

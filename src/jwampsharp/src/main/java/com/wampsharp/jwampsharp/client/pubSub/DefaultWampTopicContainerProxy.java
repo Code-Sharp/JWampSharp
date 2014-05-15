@@ -1,5 +1,7 @@
 package com.wampsharp.jwampsharp.client.pubSub;
 
+import com.wampsharp.jwampsharp.core.contracts.error.WampPublisherError;
+import com.wampsharp.jwampsharp.core.contracts.error.WampSubscriberError;
 import com.wampsharp.jwampsharp.core.contracts.pubSub.WampPublisher;
 import com.wampsharp.jwampsharp.core.contracts.pubSub.WampSubscriber;
 import com.wampsharp.jwampsharp.core.contracts.WampServerProxy;
@@ -10,8 +12,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
 public class DefaultWampTopicContainerProxy<TMessage> implements WampTopicContainerProxy,
-        WampSubscriber<TMessage>, WampPublisher<TMessage> {
-
+        WampSubscriber<TMessage>, WampPublisher<TMessage>,
+        WampSubscriberError<TMessage>, WampPublisherError<TMessage> {
     private final ConcurrentMap<String, WampTopicProxy> topicUriToTopicProxy =
             new ConcurrentHashMap<String, WampTopicProxy>();
 
@@ -66,6 +68,51 @@ public class DefaultWampTopicContainerProxy<TMessage> implements WampTopicContai
     @Override
     public void published(long requestId, long publicationId) {
         publisher.published(requestId, publicationId);
+    }
+
+    @Override
+    public void subscribeError(long requestId, TMessage details, String error) {
+        subscriber.subscribeError(requestId, details, error);
+    }
+
+    @Override
+    public void subscribeError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        subscriber.subscribeError(requestId, details, error, arguments);
+    }
+
+    @Override
+    public void subscribeError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        subscriber.subscribeError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    @Override
+    public void unsubscribeError(long requestId, TMessage details, String error) {
+        subscriber.unsubscribeError(requestId, details, error);
+    }
+
+    @Override
+    public void unsubscribeError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        subscriber.unsubscribeError(requestId, details, error, arguments);
+    }
+
+    @Override
+    public void unsubscribeError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        subscriber.unsubscribeError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    @Override
+    public void publishError(long requestId, TMessage details, String error) {
+        publisher.publishError(requestId, details, error);
+    }
+
+    @Override
+    public void publishError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        publisher.publishError(requestId, details, error, arguments);
+    }
+
+    @Override
+    public void publishError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        publisher.publishError(requestId, details, error, arguments, argumentsKeywords);
     }
 
     private class RemoveFromContainerCloseable implements AutoCloseable {

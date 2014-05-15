@@ -1,5 +1,6 @@
 package com.wampsharp.jwampsharp.client.pubSub;
 
+import com.wampsharp.jwampsharp.core.contracts.error.WampSubscriberError;
 import com.wampsharp.jwampsharp.core.contracts.pubSub.WampSubscriber;
 import com.wampsharp.jwampsharp.core.contracts.WampServerProxy;
 import com.wampsharp.jwampsharp.core.serialization.WampFormatter;
@@ -13,7 +14,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Created by Elad on 18/04/2014.
  */
-public class WampSubscriberClient<TMessage> implements WampSubscriber<TMessage>, WampTopicSubscriptionProxy {
+public class WampSubscriberClient<TMessage> implements WampSubscriber<TMessage>, WampSubscriberError<TMessage>, WampTopicSubscriptionProxy {
 
     private final WampIdMapper<SubscribeRequest> pendingSubscriptions = new WampIdMapper<SubscribeRequest>();
     private final WampServerProxy proxy;
@@ -110,6 +111,36 @@ public class WampSubscriberClient<TMessage> implements WampSubscriber<TMessage>,
         }
 
         return null;
+    }
+
+    @Override
+    public void subscribeError(long requestId, TMessage details, String error) {
+
+    }
+
+    @Override
+    public void subscribeError(long requestId, TMessage details, String error, TMessage[] arguments) {
+
+    }
+
+    @Override
+    public void subscribeError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+
+    }
+
+    @Override
+    public void unsubscribeError(long requestId, TMessage details, String error) {
+
+    }
+
+    @Override
+    public void unsubscribeError(long requestId, TMessage details, String error, TMessage[] arguments) {
+
+    }
+
+    @Override
+    public void unsubscribeError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+
     }
 
     private class BaseSubscription {

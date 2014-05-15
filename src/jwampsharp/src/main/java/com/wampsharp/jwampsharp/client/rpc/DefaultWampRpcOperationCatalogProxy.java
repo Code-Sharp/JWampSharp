@@ -2,6 +2,8 @@ package com.wampsharp.jwampsharp.client.rpc;
 
 import com.wampsharp.jwampsharp.client.rpc.Callee.WampClientCallee;
 import com.wampsharp.jwampsharp.client.rpc.Caller.WampClientCaller;
+import com.wampsharp.jwampsharp.core.contracts.error.WampCalleeError;
+import com.wampsharp.jwampsharp.core.contracts.error.WampCallerError;
 import com.wampsharp.jwampsharp.core.contracts.rpc.WampCallee;
 import com.wampsharp.jwampsharp.core.contracts.rpc.WampCaller;
 import com.wampsharp.jwampsharp.core.contracts.WampServerProxy;
@@ -14,7 +16,16 @@ import java.util.concurrent.CompletionStage;
 /**
  * Created by Elad on 16/04/2014.
  */
-public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOperationCatalogProxy, WampCallee<TMessage>, WampCaller<TMessage> {
+public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOperationCatalogProxy, WampCallee<TMessage>, WampCaller<TMessage>,
+        WampCalleeError<TMessage>, WampCallerError<TMessage> {
+    private WampClientCallee<TMessage> callee;
+    private WampClientCaller<TMessage> caller;
+
+    public DefaultWampRpcOperationCatalogProxy(WampServerProxy proxy, WampFormatter<TMessage> formatter) {
+        this.callee = new WampClientCallee<TMessage>(proxy, formatter);
+        this.caller = new WampClientCaller<TMessage>(proxy, formatter);
+    }
+
     @Override
     public void invoke(WampRawRpcOperationCallback caller, Object options, String procedure) {
         this.caller.invoke(caller, options, procedure);
@@ -29,8 +40,6 @@ public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOpe
     public void invoke(WampRawRpcOperationCallback caller, Object options, String procedure, Object[] arguments, Object argumentsKeywords) {
         this.caller.invoke(caller, options, procedure, arguments, argumentsKeywords);
     }
-
-    private WampClientCallee<TMessage> callee;
 
     @Override
     public void result(long requestId, TMessage details, TMessage[] arguments, TMessage argumentsKeywords) {
@@ -60,13 +69,6 @@ public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOpe
     @Override
     public void invoke(WampRpcOperationCallback caller, Object options, String procedure) {
         this.caller.invoke(caller, options, procedure);
-    }
-
-    private WampClientCaller<TMessage> caller;
-
-    public DefaultWampRpcOperationCatalogProxy(WampServerProxy proxy, WampFormatter<TMessage> formatter) {
-        this.callee = new WampClientCallee<TMessage>(proxy, formatter);
-        this.caller = new WampClientCaller<TMessage>(proxy, formatter);
     }
 
     @Override
@@ -107,5 +109,50 @@ public class DefaultWampRpcOperationCatalogProxy<TMessage> implements WampRpcOpe
     @Override
     public void interrupt(long requestId, TMessage options) {
         callee.interrupt(requestId, options);
+    }
+
+    @Override
+    public void registerError(long requestId, TMessage details, String error) {
+        callee.registerError(requestId, details, error);
+    }
+
+    @Override
+    public void registerError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        callee.registerError(requestId, details, error, arguments);
+    }
+
+    @Override
+    public void registerError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        callee.registerError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    @Override
+    public void unregisterError(long requestId, TMessage details, String error) {
+        callee.unregisterError(requestId, details, error);
+    }
+
+    @Override
+    public void unregisterError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        callee.unregisterError(requestId, details, error, arguments);
+    }
+
+    @Override
+    public void unregisterError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        callee.unregisterError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    @Override
+    public void callError(long requestId, TMessage details, String error) {
+        caller.callError(requestId, details, error);
+    }
+
+    @Override
+    public void callError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        caller.callError(requestId, details, error, arguments);
+    }
+
+    @Override
+    public void callError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        caller.callError(requestId, details, error, arguments, argumentsKeywords);
     }
 }

@@ -1,5 +1,6 @@
 package com.wampsharp.jwampsharp.client.rpc.Callee;
 
+import com.wampsharp.jwampsharp.core.contracts.error.WampCalleeError;
 import com.wampsharp.jwampsharp.core.contracts.rpc.WampCallee;
 import com.wampsharp.jwampsharp.core.contracts.WampServerProxy;
 import com.wampsharp.jwampsharp.core.message.WampMessageType;
@@ -15,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Elad on 16/04/2014.
  */
-public class WampClientCallee<TMessage> implements WampCallee<TMessage>, WampRpcOperationRegistrationProxy {
+public class WampClientCallee<TMessage> implements WampCallee<TMessage>, WampCalleeError<TMessage>, WampRpcOperationRegistrationProxy {
 
     private final WampServerProxy proxy;
     private final WampFormatter<TMessage> formatter;
@@ -125,6 +126,36 @@ public class WampClientCallee<TMessage> implements WampCallee<TMessage>, WampRpc
 
     @Override
     public void interrupt(long requestId, TMessage options) {
+
+    }
+
+    @Override
+    public void registerError(long requestId, TMessage details, String error) {
+
+    }
+
+    @Override
+    public void registerError(long requestId, TMessage details, String error, TMessage[] arguments) {
+
+    }
+
+    @Override
+    public void registerError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+
+    }
+
+    @Override
+    public void unregisterError(long requestId, TMessage details, String error) {
+
+    }
+
+    @Override
+    public void unregisterError(long requestId, TMessage details, String error, TMessage[] arguments) {
+
+    }
+
+    @Override
+    public void unregisterError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
 
     }
 

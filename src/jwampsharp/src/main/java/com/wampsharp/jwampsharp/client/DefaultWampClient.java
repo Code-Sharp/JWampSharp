@@ -2,7 +2,7 @@ package com.wampsharp.jwampsharp.client;
 
 import com.wampsharp.jwampsharp.client.realm.WampRealmProxy;
 import com.wampsharp.jwampsharp.client.session.SessionClient;
-import com.wampsharp.jwampsharp.core.contracts.error.WampError;
+import com.wampsharp.jwampsharp.core.contracts.error.*;
 import com.wampsharp.jwampsharp.core.contracts.pubSub.WampPublisher;
 import com.wampsharp.jwampsharp.core.contracts.pubSub.WampSubscriber;
 import com.wampsharp.jwampsharp.core.contracts.rpc.WampCallee;
@@ -14,15 +14,17 @@ import java.util.concurrent.CompletionStage;
 /**
  * Created by Elad on 16/04/2014.
  */
-public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSessionClientExtended<TMessage> {
+public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSessionClientExtended<TMessage>,
+        WampCalleeError<TMessage>, WampCallerError<TMessage>,
+        WampSubscriberError<TMessage>, WampPublisherError<TMessage> {
 
     private final WampRealmProxy realmProxy;
     private WampSessionClientExtended<TMessage> sessionClient;
-    private WampCaller<TMessage> caller;
-    private WampError<TMessage> error;
+    private WampError<TMessage> errorHandler;
 
     public DefaultWampClient(WampRealmProxyFactory<TMessage> realmProxyFactory) {
         realmProxy = realmProxyFactory.build(this);
+        errorHandler = new ErrorForwarder<TMessage>(this);
         sessionClient = new SessionClient<TMessage>(realmProxy);
     }
 
@@ -32,23 +34,39 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSe
     }
 
     private WampCallee<TMessage> getCallee() {
-        return (WampCallee<TMessage>)realmProxy.getRpcCatalog();
+        return (WampCallee<TMessage>) realmProxy.getRpcCatalog();
     }
 
     private WampCaller<TMessage> getCaller() {
-        return (WampCaller<TMessage>)realmProxy.getRpcCatalog();
+        return (WampCaller<TMessage>) realmProxy.getRpcCatalog();
     }
 
     private WampPublisher<TMessage> getPublisher() {
-        return (WampPublisher<TMessage>)realmProxy.getTopicContainer();
+        return (WampPublisher<TMessage>) realmProxy.getTopicContainer();
     }
 
     private WampSubscriber<TMessage> getSubscriber() {
-        return (WampSubscriber<TMessage>)realmProxy.getTopicContainer();
+        return (WampSubscriber<TMessage>) realmProxy.getTopicContainer();
     }
 
-    private WampError<TMessage> getError() {
-        return error;
+    private WampError<TMessage> getErrorHandler() {
+        return errorHandler;
+    }
+
+    public WampCalleeError<TMessage> getCalleeError() {
+        return (WampCalleeError<TMessage>) realmProxy.getRpcCatalog();
+    }
+
+    public WampCallerError<TMessage> getCallerError() {
+        return (WampCallerError<TMessage>) realmProxy.getRpcCatalog();
+    }
+
+    public WampPublisherError<TMessage> getPublisherError() {
+        return (WampPublisherError<TMessage>) realmProxy.getTopicContainer();
+    }
+
+    public WampSubscriberError<TMessage> getSubscriberError() {
+        return (WampSubscriberError<TMessage>) realmProxy.getTopicContainer();
     }
 
     public long getSession() {
@@ -156,14 +174,86 @@ public class DefaultWampClient<TMessage> implements WampClient<TMessage>, WampSe
     }
 
     public void error(int requestType, long requestId, TMessage details, String error) {
-        this.getError().error(requestType, requestId, details, error);
+        this.getErrorHandler().error(requestType, requestId, details, error);
     }
 
     public void error(int requestType, long requestId, TMessage details, String error, TMessage[] arguments) {
-        this.getError().error(requestType, requestId, details, error, arguments);
+        this.getErrorHandler().error(requestType, requestId, details, error, arguments);
     }
 
     public void error(int requestType, long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
-        this.getError().error(requestType, requestId, details, error, arguments, argumentsKeywords);
+        this.getErrorHandler().error(requestType, requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    public void registerError(long requestId, TMessage details, String error) {
+        getCalleeError().registerError(requestId, details, error);
+    }
+
+    public void unregisterError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        getCalleeError().unregisterError(requestId, details, error, arguments);
+    }
+
+    public void registerError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        getCalleeError().registerError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    public void unregisterError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        getCalleeError().unregisterError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    public void unregisterError(long requestId, TMessage details, String error) {
+        getCalleeError().unregisterError(requestId, details, error);
+    }
+
+    public void registerError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        getCalleeError().registerError(requestId, details, error, arguments);
+    }
+
+    public void callError(long requestId, TMessage details, String error) {
+        getCallerError().callError(requestId, details, error);
+    }
+
+    public void callError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        getCallerError().callError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    public void callError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        getCallerError().callError(requestId, details, error, arguments);
+    }
+
+    public void publishError(long requestId, TMessage details, String error) {
+        getPublisherError().publishError(requestId, details, error);
+    }
+
+    public void publishError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        getPublisherError().publishError(requestId, details, error, arguments);
+    }
+
+    public void publishError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        getPublisherError().publishError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    public void subscribeError(long requestId, TMessage details, String error) {
+        getSubscriberError().subscribeError(requestId, details, error);
+    }
+
+    public void unsubscribeError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        getSubscriberError().unsubscribeError(requestId, details, error, arguments);
+    }
+
+    public void unsubscribeError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        getSubscriberError().unsubscribeError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    public void subscribeError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        getSubscriberError().subscribeError(requestId, details, error, arguments, argumentsKeywords);
+    }
+
+    public void subscribeError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        getSubscriberError().subscribeError(requestId, details, error, arguments);
+    }
+
+    public void unsubscribeError(long requestId, TMessage details, String error) {
+        getSubscriberError().unsubscribeError(requestId, details, error);
     }
 }

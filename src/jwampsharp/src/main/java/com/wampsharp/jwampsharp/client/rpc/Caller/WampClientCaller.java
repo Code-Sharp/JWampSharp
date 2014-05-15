@@ -1,6 +1,7 @@
 package com.wampsharp.jwampsharp.client.rpc.Caller;
 
 import com.wampsharp.jwampsharp.client.rpc.WampRawRpcOperationCallback;
+import com.wampsharp.jwampsharp.core.contracts.error.WampCallerError;
 import com.wampsharp.jwampsharp.core.contracts.rpc.WampCaller;
 import com.wampsharp.jwampsharp.core.contracts.WampServerProxy;
 import com.wampsharp.jwampsharp.core.serialization.WampFormatter;
@@ -10,7 +11,7 @@ import com.wampsharp.jwampsharp.rpc.WampRpcOperationCallback;
 /**
  * Created by Elad on 17/04/2014.
  */
-public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampRpcOperationInvokerProxy {
+public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampCallerError<TMessage>, WampRpcOperationInvokerProxy {
     private final WampServerProxy proxy;
     private final WampIdMapper<CallDetails> pendingCalls = new WampIdMapper<CallDetails>();
     private final WampFormatter<TMessage> formatter;
@@ -74,6 +75,33 @@ public class WampClientCaller<TMessage> implements WampCaller<TMessage>, WampRpc
 
         if (callDetails != null) {
             callDetails.getCaller().result(this.getFormatter(), details, arguments);
+        }
+    }
+
+    @Override
+    public void callError(long requestId, TMessage details, String error) {
+        CallDetails callDetails = tryGetCallDetails(requestId);
+
+        if (callDetails != null) {
+            callDetails.getCaller().error(this.getFormatter(), details, error);
+        }
+    }
+
+    @Override
+    public void callError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        CallDetails callDetails = tryGetCallDetails(requestId);
+
+        if (callDetails != null) {
+            callDetails.getCaller().error(this.getFormatter(), details, error, arguments);
+        }
+    }
+
+    @Override
+    public void callError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        CallDetails callDetails = tryGetCallDetails(requestId);
+
+        if (callDetails != null) {
+            callDetails.getCaller().error(this.getFormatter(), details, error, arguments, argumentsKeywords);
         }
     }
 
