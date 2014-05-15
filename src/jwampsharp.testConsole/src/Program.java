@@ -1,10 +1,14 @@
+import com.wampsharp.jwampsharp.client.rpc.WampRawRpcOperationCallback;
+import com.wampsharp.jwampsharp.client.rpc.WampRpcOperationCatalogProxy;
 import com.wampsharp.jwampsharp.defaultBinding.JsonNodeChannelFactory;
-import com.wampsharp.jwampsharp.defaultBinding.WebsocketWampTextConnection;
 import com.wampsharp.jwampsharp.client.pubSub.WampRawTopicSubscriber;
 import com.wampsharp.jwampsharp.client.realm.WampRealmProxy;
 import com.wampsharp.jwampsharp.client.WampChannel;
 import com.wampsharp.jwampsharp.core.serialization.WampFormatter;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.wampsharp.jwampsharp.defaultBinding.jsr.WebsocketWampTextConnection;
+import com.wampsharp.jwampsharp.rpc.WampRpcOperation;
+import com.wampsharp.jwampsharp.rpc.WampRpcOperationCallback;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -19,7 +23,8 @@ public class Program {
         try {
             JsonNodeChannelFactory factory = new JsonNodeChannelFactory();
 
-            WampChannel<JsonNode> channel = factory.createChannel("realm1", new WebsocketWampTextConnection<JsonNode>(new URI("ws://localhost:9090/ws"),
+            WampChannel<JsonNode> channel =
+                    factory.createChannel("realm1", new WebsocketWampTextConnection<JsonNode>(new URI("ws://127.0.0.1:9090/ws"),
                     factory.getBinding()));
 
 
@@ -30,6 +35,7 @@ public class Program {
 
             WampRealmProxy realmProxy = channel.getRealmProxy();
 
+            /*
             realmProxy.getTopicContainer().getTopic("com.myapp.topic2")
                     .subscribe(new WampRawTopicSubscriber() {
                         @Override
@@ -48,11 +54,11 @@ public class Program {
                         }
                     },
                    new HashMap<String,String>());
-
-            /*
+*/
             WampRpcOperationCatalogProxy rpcCatalog =
                     realmProxy.getRpcCatalog();
 
+            /*
             CompletionStage register = rpcCatalog.register(new WampRpcOperation() {
                                                                @Override
                                                                public String getProcedure() {
@@ -80,6 +86,7 @@ public class Program {
 
             Object result =
                     register.toCompletableFuture().get();
+                    */
 
             rpcCatalog.invoke(new WampRawRpcOperationCallback() {
                                   @Override
@@ -112,10 +119,7 @@ public class Program {
 
                                   }
                               }, new HashMap<String, String>(),
-                    "com.arguments.add2",
-                    new Object[]{2, 4}
-            );
-            */
+                    "com.timeservice.now");
 
 
         } catch (Exception ex) {
