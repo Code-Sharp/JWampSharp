@@ -9,14 +9,20 @@ Currently still in development. See examples in TestConsole project.
 
 Master | Provider
 ------ | --------
-[![Build Status][MonoImgMaster]][MonoLinkMaster] | Mono CI Provided by [travis-ci][] 
+[![Build Status][MonoImgMaster]][MonoLinkMaster] | CI Provided by [travis-ci][] 
+[![Build Status][CloudbeesImgMaster]][CloudbeesLinkMaster] | CI Provided by [Cloudbees][] 
 
 [MonoImgMaster]:https://travis-ci.org/darkl/JWampSharp.png?branch=master
 [MonoLinkMaster]:https://travis-ci.org/darkl/JWampSharp
 
+[CloudbeesImgMaster]:https://darkl.ci.cloudbees.com/job/JWampSharp-master/badge/icon
+[CloudbeesLinkMaster]:https://darkl.ci.cloudbees.com/job/JWampSharp-master/
+
+
 [WampLink]:http://wamp.ws
 [WampSharpLink]:https://github.com/darkl/WampSharp/
 [travis-ci]:https://travis-ci.org/
+[Cloudbees]:https://www.cloudbees.com/
 
 How to build
 ==========
