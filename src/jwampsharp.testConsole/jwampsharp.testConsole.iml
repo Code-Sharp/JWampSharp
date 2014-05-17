@@ -9,7 +9,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="jwampsharp.defaultBinding" />
     <orderEntry type="module" module-name="jwampsharp" />
-    <orderEntry type="library" name="org.glassfish.tyrus:tyrus-container-grizzly-client:1.5" level="project" />
+    <orderEntry type="library" name="org.glassfish.tyrus:tyrus-container-grizzly-client:1.4" level="project" />
   </component>
 </module>
 
