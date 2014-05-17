@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/JWampSharp.iml" filepath="$PROJECT_DIR$/JWampSharp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jwampsharp/jwampsharp.iml" filepath="$PROJECT_DIR$/jwampsharp/jwampsharp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jwampsharp.defaultBinding/jwampsharp.defaultBinding.iml" filepath="$PROJECT_DIR$/jwampsharp.defaultBinding/jwampsharp.defaultBinding.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jwampsharp.testConsole/jwampsharp.testConsole.iml" filepath="$PROJECT_DIR$/jwampsharp.testConsole/jwampsharp.testConsole.iml" />
+    </modules>
+  </component>
+</project>
+
