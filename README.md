@@ -28,7 +28,8 @@ How to build
 ==========
 
 run 
-`src\gradlew build`
+`cd src` <br />
+`.\gradlew build`
 
 
 Want to help? see issues and contribute a commit!
