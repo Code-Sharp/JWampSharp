@@ -18,7 +18,6 @@ Master | Provider
 [CloudbeesImgMaster]:https://darkl.ci.cloudbees.com/job/JWampSharp-master/badge/icon
 [CloudbeesLinkMaster]:https://darkl.ci.cloudbees.com/job/JWampSharp-master/
 
-
 [WampLink]:http://wamp.ws
 [WampSharpLink]:https://github.com/darkl/WampSharp/
 [travis-ci]:https://travis-ci.org/
