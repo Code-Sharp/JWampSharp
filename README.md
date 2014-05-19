@@ -12,8 +12,8 @@ Master | Provider
 [![Build Status][MonoImgMaster]][MonoLinkMaster] | CI Provided by [travis-ci][] 
 [![Build Status][CloudbeesImgMaster]][CloudbeesLinkMaster] | CI Provided by [Cloudbees][] 
 
-[MonoImgMaster]:https://travis-ci.org/darkl/JWampSharp.png?branch=master
-[MonoLinkMaster]:https://travis-ci.org/darkl/JWampSharp
+[MonoImgMaster]:https://travis-ci.org/Code-Sharp/JWampSharp.png?branch=master
+[MonoLinkMaster]:https://travis-ci.org/Code-Sharp/JWampSharp
 
 [CloudbeesImgMaster]:https://darkl.ci.cloudbees.com/job/JWampSharp-master/badge/icon
 [CloudbeesLinkMaster]:https://darkl.ci.cloudbees.com/job/JWampSharp-master/
