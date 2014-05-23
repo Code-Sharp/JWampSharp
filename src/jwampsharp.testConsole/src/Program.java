@@ -1,14 +1,11 @@
-import com.wampsharp.jwampsharp.client.rpc.WampRawRpcOperationCallback;
-import com.wampsharp.jwampsharp.client.rpc.WampRpcOperationCatalogProxy;
-import com.wampsharp.jwampsharp.defaultBinding.JsonNodeChannelFactory;
-import com.wampsharp.jwampsharp.client.pubSub.WampRawTopicSubscriber;
-import com.wampsharp.jwampsharp.client.realm.WampRealmProxy;
-import com.wampsharp.jwampsharp.client.WampChannel;
-import com.wampsharp.jwampsharp.core.serialization.WampFormatter;
+import co.codesharp.jwampsharp.client.rpc.WampRawRpcOperationCallback;
+import co.codesharp.jwampsharp.client.rpc.WampRpcOperationCatalogProxy;
+import co.codesharp.jwampsharp.defaultBinding.JsonNodeChannelFactory;
+import co.codesharp.jwampsharp.client.realm.WampRealmProxy;
+import co.codesharp.jwampsharp.client.WampChannel;
+import co.codesharp.jwampsharp.core.serialization.WampFormatter;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.wampsharp.jwampsharp.defaultBinding.jsr.WebsocketWampTextConnection;
-import com.wampsharp.jwampsharp.rpc.WampRpcOperation;
-import com.wampsharp.jwampsharp.rpc.WampRpcOperationCallback;
+import co.codesharp.jwampsharp.defaultBinding.jsr.WebsocketWampTextConnection;
 
 import java.net.URI;
 import java.util.HashMap;
