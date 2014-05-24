@@ -1,5 +1,6 @@
 package co.codesharp.jwampsharp.client.rpc.Callee;
 
+import co.codesharp.jwampsharp.client.WampPendingRequest;
 import co.codesharp.jwampsharp.core.WampIdMapper;
 import co.codesharp.jwampsharp.core.contracts.WampServerProxy;
 import co.codesharp.jwampsharp.core.contracts.error.WampCalleeError;
@@ -38,7 +39,7 @@ public class WampClientCallee<TMessage> implements WampCallee<TMessage>, WampCal
 
     @Override
     public CompletionStage register(WampRpcOperation operation, Object options) {
-        Request request = new Request(operation);
+        Request request = new Request(formatter, operation);
         long id = pendingRegistrations.add(request);
         request.setRequestId(id);
         proxy.register(id, options, operation.getProcedure());
@@ -59,7 +60,7 @@ public class WampClientCallee<TMessage> implements WampCallee<TMessage>, WampCal
 
     @Override
     public CompletionStage unregister(WampRpcOperation operation) {
-        Request request = new Request(operation);
+        Request request = new Request(formatter, operation);
 
         Long registrationId =
                 this.operationToRegistrationId.getOrDefault(operation, null);
@@ -131,63 +132,74 @@ public class WampClientCallee<TMessage> implements WampCallee<TMessage>, WampCal
 
     @Override
     public void registerError(long requestId, TMessage details, String error) {
+        Request request = pendingRegistrations.remove(requestId);
 
+        if (request != null)
+        {
+            request.error(details, error);
+        }
     }
 
     @Override
     public void registerError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        Request request = pendingRegistrations.remove(requestId);
 
+        if (request != null)
+        {
+            request.error(details, error, arguments);
+        }
     }
 
     @Override
     public void registerError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        Request request = pendingRegistrations.remove(requestId);
 
+        if (request != null)
+        {
+            request.error(details, error, arguments, argumentsKeywords);
+        }
     }
 
     @Override
     public void unregisterError(long requestId, TMessage details, String error) {
+        Request request = pendingUnregistrations.remove(requestId);
 
+        if (request != null)
+        {
+            request.error(details, error);
+        }
     }
 
     @Override
     public void unregisterError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        Request request = pendingUnregistrations.remove(requestId);
 
+        if (request != null)
+        {
+            request.error(details, error, arguments);
+        }
     }
 
     @Override
     public void unregisterError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        Request request = pendingUnregistrations.remove(requestId);
 
+        if (request != null)
+        {
+            request.error(details, error, arguments, argumentsKeywords);
+        }
     }
 
-    private class Request {
-        private final CompletableFuture<Boolean> completableFuture =
-                new CompletableFuture<Boolean>();
-
+    private class Request extends WampPendingRequest<TMessage, Boolean> {
         private final WampRpcOperation operation;
 
-        private long requestId;
-
-        private Request(WampRpcOperation operation) {
+        private Request(WampFormatter<TMessage> formatter, WampRpcOperation operation) {
+            super(formatter);
             this.operation = operation;
         }
 
-        public long getRequestId() {
-            return requestId;
-        }
-
-        public void setRequestId(long requestId) {
-            this.requestId = requestId;
-        }
-
-        public CompletionStage<Boolean> getCompletionStage() {
-            return completableFuture;
-        }
-
         public void complete() {
-            completableFuture.complete(true);
-        }
-
-        public void error() {
+            super.complete(true);
         }
 
         public WampRpcOperation getOperation() {

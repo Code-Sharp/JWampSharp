@@ -1,12 +1,12 @@
 package co.codesharp.jwampsharp.client.pubSub;
 
+import co.codesharp.jwampsharp.client.WampPendingRequest;
 import co.codesharp.jwampsharp.core.contracts.error.WampSubscriberError;
 import co.codesharp.jwampsharp.core.contracts.pubSub.WampSubscriber;
 import co.codesharp.jwampsharp.core.contracts.WampServerProxy;
 import co.codesharp.jwampsharp.core.serialization.WampFormatter;
 import co.codesharp.jwampsharp.core.WampIdMapper;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -30,7 +30,7 @@ public class WampSubscriberClient<TMessage> implements WampSubscriber<TMessage>,
 
     @Override
     public CompletionStage<AutoCloseable> subscribe(WampRawTopicSubscriber subscriber, Object options, String topicUri) {
-        SubscribeRequest request = new SubscribeRequest(subscriber, options, topicUri);
+        SubscribeRequest request = new SubscribeRequest(formatter, subscriber, options, topicUri);
         long requestId = this.pendingSubscriptions.add(request);
         request.setRequestId(requestId);
 
@@ -41,7 +41,7 @@ public class WampSubscriberClient<TMessage> implements WampSubscriber<TMessage>,
 
 
     private CompletionStage unsubscribe(long subscriptionId) {
-        UnsubscribeRequest request = new UnsubscribeRequest(subscriptionId);
+        UnsubscribeRequest request = new UnsubscribeRequest(formatter, subscriptionId);
         long requestId = pendingUnsubscriptions.add(request);
         request.setRequestId(requestId);
         proxy.unsubscribe(requestId, subscriptionId);
@@ -115,32 +115,56 @@ public class WampSubscriberClient<TMessage> implements WampSubscriber<TMessage>,
 
     @Override
     public void subscribeError(long requestId, TMessage details, String error) {
+        SubscribeRequest request = pendingSubscriptions.remove(requestId);
 
+        if (request != null) {
+            request.error(details, error);
+        }
     }
 
     @Override
     public void subscribeError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        SubscribeRequest request = pendingSubscriptions.remove(requestId);
 
+        if (request != null) {
+            request.error(details, error, arguments);
+        }
     }
 
     @Override
     public void subscribeError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        SubscribeRequest request = pendingSubscriptions.remove(requestId);
 
+        if (request != null) {
+            request.error(details, error, arguments, argumentsKeywords);
+        }
     }
 
     @Override
     public void unsubscribeError(long requestId, TMessage details, String error) {
+        UnsubscribeRequest request = pendingUnsubscriptions.remove(requestId);
 
+        if (request != null) {
+            request.error(details, error);
+        }
     }
 
     @Override
     public void unsubscribeError(long requestId, TMessage details, String error, TMessage[] arguments) {
+        UnsubscribeRequest request = pendingUnsubscriptions.remove(requestId);
 
+        if (request != null) {
+            request.error(details, error, arguments);
+        }
     }
 
     @Override
     public void unsubscribeError(long requestId, TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+        UnsubscribeRequest request = pendingUnsubscriptions.remove(requestId);
 
+        if (request != null) {
+            request.error(details, error, arguments, argumentsKeywords);
+        }
     }
 
     private class BaseSubscription {
@@ -168,27 +192,40 @@ public class WampSubscriberClient<TMessage> implements WampSubscriber<TMessage>,
     }
 
     private class SubscribeRequest extends BaseSubscription {
-        private long requestId;
-        private final CompletableFuture<AutoCloseable> completionStage = new CompletableFuture<AutoCloseable>();
 
-        private SubscribeRequest(WampRawTopicSubscriber subscriber, Object options, String topicUri) {
+        private WampPendingRequest<TMessage, AutoCloseable> pendingRequest;
+
+        private SubscribeRequest(WampFormatter<TMessage> formatter, WampRawTopicSubscriber subscriber, Object options, String topicUri) {
             super(options, topicUri, subscriber);
+            pendingRequest = new WampPendingRequest<TMessage, AutoCloseable>(formatter);
         }
 
         public CompletionStage<AutoCloseable> getCompletionStage() {
-            return completionStage;
-        }
-
-        public void complete(AutoCloseable autoCloseable){
-            this.completionStage.complete(autoCloseable);
-        }
-
-        public long getRequestId() {
-            return requestId;
+            return pendingRequest.getCompletionStage();
         }
 
         public void setRequestId(long requestId) {
-            this.requestId = requestId;
+            pendingRequest.setRequestId(requestId);
+        }
+
+        public void complete(AutoCloseable autoCloseable) {
+            pendingRequest.complete(autoCloseable);
+        }
+
+        public long getRequestId() {
+            return pendingRequest.getRequestId();
+        }
+
+        public void error(TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
+            pendingRequest.error(details, error, arguments, argumentsKeywords);
+        }
+
+        public void error(TMessage details, String error) {
+            pendingRequest.error(details, error);
+        }
+
+        public void error(TMessage details, String error, TMessage[] arguments) {
+            pendingRequest.error(details, error, arguments);
         }
     }
 
@@ -220,29 +257,16 @@ public class WampSubscriberClient<TMessage> implements WampSubscriber<TMessage>,
         }
     }
 
-    private class UnsubscribeRequest {
+    private class UnsubscribeRequest extends WampPendingRequest<TMessage, Boolean> {
         private final long subscriptionId;
-        private final CompletableFuture<Boolean> completionStage = new CompletableFuture<Boolean>();
-        private long requestId;
 
-        private UnsubscribeRequest(long subscriptionId) {
+        private UnsubscribeRequest(WampFormatter<TMessage> formatter, long subscriptionId) {
+            super(formatter);
             this.subscriptionId = subscriptionId;
         }
 
-        public CompletionStage getCompletionStage() {
-            return completionStage;
-        }
-
-        public long getRequestId() {
-            return requestId;
-        }
-
-        public void setRequestId(long requestId) {
-            this.requestId = requestId;
-        }
-
         public void complete() {
-            this.completionStage.complete(true);
+            super.complete(true);
         }
     }
 }
