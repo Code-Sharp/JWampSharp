@@ -68,5 +68,4 @@ public class TestErrorForwarder {
 
     private class TMessage {
     }
-
 }
