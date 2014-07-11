@@ -1,6 +1,6 @@
 import co.codesharp.jwampsharp.client.rpc.WampRawRpcOperationCallback;
 import co.codesharp.jwampsharp.client.rpc.WampRpcOperationCatalogProxy;
-import co.codesharp.jwampsharp.defaultBinding.JsonNodeChannelFactory;
+import co.codesharp.jwampsharp.defaultBinding.JsonNodeChannelBuilder;
 import co.codesharp.jwampsharp.client.realm.WampRealmProxy;
 import co.codesharp.jwampsharp.client.WampChannel;
 import co.codesharp.jwampsharp.core.serialization.WampFormatter;
@@ -18,7 +18,7 @@ public class Program {
     public static void main(String[] args) {
 
         try {
-            JsonNodeChannelFactory factory = new JsonNodeChannelFactory();
+            JsonNodeChannelBuilder factory = new JsonNodeChannelBuilder();
 
             WampChannel<JsonNode> channel =
                     factory.createChannel("realm1", new WebsocketWampTextConnection<JsonNode>(new URI("ws://127.0.0.1:9090/ws"),

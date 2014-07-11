@@ -1,20 +1,20 @@
 package co.codesharp.jwampsharp.defaultBinding;
 
-import co.codesharp.jwampsharp.client.WampChannelFactory;
+import co.codesharp.jwampsharp.client.WampChannelBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Created by Elad on 16/04/2014.
  */
-public class JsonNodeChannelFactory extends WampChannelFactory<JsonNode> {
+class JsonNodeChannelBuilder extends WampChannelBuilder<JsonNode> {
     private JsonNodeBinding binding;
 
-    private JsonNodeChannelFactory(JsonNodeBinding binding) {
+    private JsonNodeChannelBuilder(JsonNodeBinding binding) {
         super(binding, JsonNode.class, JsonNode[].class);
         this.binding = binding;
     }
 
-    public JsonNodeChannelFactory() {
+    public JsonNodeChannelBuilder() {
         this(new JsonNodeBinding());
     }
 

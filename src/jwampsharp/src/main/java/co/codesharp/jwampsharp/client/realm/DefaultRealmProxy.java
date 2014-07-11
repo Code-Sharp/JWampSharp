@@ -1,5 +1,6 @@
 package co.codesharp.jwampsharp.client.realm;
 
+import co.codesharp.jwampsharp.api.WampRealmServiceProvider;
 import co.codesharp.jwampsharp.client.pubSub.DefaultWampTopicContainerProxy;
 import co.codesharp.jwampsharp.client.pubSub.WampTopicContainerProxy;
 import co.codesharp.jwampsharp.client.rpc.DefaultWampRpcOperationCatalogProxy;
@@ -7,6 +8,7 @@ import co.codesharp.jwampsharp.client.rpc.WampRpcOperationCatalogProxy;
 import co.codesharp.jwampsharp.core.contracts.WampServerProxy;
 import co.codesharp.jwampsharp.core.binding.WampBinding;
 import co.codesharp.jwampsharp.core.serialization.WampFormatter;
+import co.codesharp.jwampsharp.core.utilities.EventHandler;
 
 /**
  * Created by Elad on 16/04/2014.
@@ -45,5 +47,23 @@ public class DefaultRealmProxy<TMessage> implements WampRealmProxy {
     @Override
     public WampServerProxy getProxy() {
         return this.proxy;
+    }
+
+    @Override
+    public WampRealmServiceProvider getServices() {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public EventHandler<WampSessionEventArgs> getConnectionEstablished() {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public EventHandler<WampSessionCloseEventArgs> getConnectionBroken() {
+        // TODO
+        return null;
     }
 }
