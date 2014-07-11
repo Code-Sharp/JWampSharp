@@ -13,3 +13,4 @@ public interface WampBinding<TMessage> {
 
     WampFormatter<TMessage> getFormatter();
 }
+

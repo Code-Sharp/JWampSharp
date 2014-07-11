@@ -1,10 +1,5 @@
 package co.codesharp.jwampsharp.core.binding;
 
-import co.codesharp.jwampsharp.core.message.WampMessage;
-
-public interface WampBinaryMessageParser<TMessage>
+public interface WampBinaryMessageParser<TMessage> extends WampMessageParser<TMessage, byte[]>
 {
-    WampMessage<TMessage> parse(byte[] bytes);
-
-    byte[] format(WampMessage<TMessage> message);
 }
