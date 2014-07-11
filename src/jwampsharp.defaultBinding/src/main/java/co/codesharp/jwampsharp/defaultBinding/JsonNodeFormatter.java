@@ -25,7 +25,7 @@ public class JsonNodeFormatter implements WampFormatter<JsonNode> {
         }
         catch (Exception ex)
         {
-            return null;
+            throw new RuntimeException(ex.getMessage(), ex);
         }
     }
 

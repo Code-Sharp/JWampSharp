@@ -8,7 +8,7 @@ import co.codesharp.jwampsharp.core.serialization.WampFormatter;
 /**
  * Created by Elad on 15/04/2014.
  */
-public class JsonBinding<TMessage> extends WampTransportBindingBase<TMessage, String> implements WampTextBinding<TMessage> {
+public abstract class JsonBinding<TMessage> extends WampTransportBindingBase<TMessage, String> implements WampTextBinding<TMessage> {
     protected JsonBinding(WampFormatter<TMessage> formatter, WampTextMessageParser<TMessage> parser) {
         super(formatter, parser, "wamp.2.json");
     }

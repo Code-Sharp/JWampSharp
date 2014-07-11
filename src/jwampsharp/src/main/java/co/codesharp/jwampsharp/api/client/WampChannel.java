@@ -13,5 +13,5 @@ public interface WampChannel {
 
     WampRealmProxy getRealmProxy();
 
-    CompletionStage open();
+    CompletionStage open() throws Exception;
 }

@@ -8,7 +8,7 @@ import co.codesharp.jwampsharp.core.serialization.WampFormatter;
 /**
  * Created by Elad on 15/04/2014.
  */
-public class MsgpackBinding<TMessage> extends WampTransportBindingBase<TMessage, byte[]> implements WampBinaryBinding<TMessage> {
+public abstract class MsgpackBinding<TMessage> extends WampTransportBindingBase<TMessage, byte[]> implements WampBinaryBinding<TMessage> {
     protected MsgpackBinding(WampFormatter<TMessage> formatter, WampBinaryMessageParser<TMessage> parser) {
         super(formatter, parser, "wamp.2.msgpack");
     }

@@ -10,4 +10,14 @@ public class JsonNodeBinding extends JsonBinding<JsonNode> {
     protected JsonNodeBinding() {
         super(new JsonNodeFormatter(), new JsonNodeMessageParser());
     }
+
+    @Override
+    public Class<JsonNode> getUnderlyingMessageType() {
+        return JsonNode.class;
+    }
+
+    @Override
+    public Class<JsonNode[]> getUnderlyingMessageTypeArray() {
+        return JsonNode[].class;
+    }
 }

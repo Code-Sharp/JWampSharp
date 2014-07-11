@@ -1,11 +1,9 @@
+import co.codesharp.jwampsharp.api.client.WampChannel;
+import co.codesharp.jwampsharp.client.realm.WampRealmProxy;
 import co.codesharp.jwampsharp.client.rpc.WampRawRpcOperationCallback;
 import co.codesharp.jwampsharp.client.rpc.WampRpcOperationCatalogProxy;
-import co.codesharp.jwampsharp.defaultBinding.JsonNodeChannelBuilder;
-import co.codesharp.jwampsharp.client.realm.WampRealmProxy;
-import co.codesharp.jwampsharp.client.WampChannel;
 import co.codesharp.jwampsharp.core.serialization.WampFormatter;
-import com.fasterxml.jackson.databind.JsonNode;
-import co.codesharp.jwampsharp.defaultBinding.jsr.WebsocketWampTextConnection;
+import co.codesharp.jwampsharp.defaultBinding.DefaultWampChannelFactory;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -18,12 +16,11 @@ public class Program {
     public static void main(String[] args) {
 
         try {
-            JsonNodeChannelBuilder factory = new JsonNodeChannelBuilder();
+            DefaultWampChannelFactory factory =
+                    new DefaultWampChannelFactory();
 
-            WampChannel<JsonNode> channel =
-                    factory.createChannel("realm1", new WebsocketWampTextConnection<JsonNode>(new URI("ws://127.0.0.1:9090/ws"),
-                    factory.getBinding()));
-
+            WampChannel channel =
+                    factory.createJsonChannel(new URI("ws://127.0.0.1:8080/ws"), "realm1");
 
             CompletionStage open = channel.open();
 

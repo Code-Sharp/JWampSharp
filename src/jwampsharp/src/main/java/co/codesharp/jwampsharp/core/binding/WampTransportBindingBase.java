@@ -6,7 +6,7 @@ import co.codesharp.jwampsharp.core.serialization.WampFormatter;
 /**
  * Created by Elad on 7/10/2014.
  */
-public class WampTransportBindingBase<TMessage, TRaw> extends WampBindingBase<TMessage> implements WampTransportBinding<TMessage, TRaw> {
+public abstract class WampTransportBindingBase<TMessage, TRaw> extends WampBindingBase<TMessage> implements WampTransportBinding<TMessage, TRaw> {
     private final WampMessageParser<TMessage, TRaw> parser;
 
     protected WampTransportBindingBase(WampFormatter<TMessage> formatter, WampMessageParser<TMessage, TRaw> parser, String protocolName) {

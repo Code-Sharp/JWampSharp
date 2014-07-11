@@ -16,19 +16,15 @@ import co.codesharp.jwampsharp.core.utilities.EventListener;
  */
 public class DefaultWampServerProxyBuilder<TMessage> implements WampServerProxyBuilder<TMessage> {
     private WampBinding<TMessage> binding;
-    private Class<TMessage> underlyingMessageType;
-    private Class<TMessage[]> underlyingMessageTypeArray;
 
-    public DefaultWampServerProxyBuilder(WampBinding<TMessage> binding, Class<TMessage> underlyingMessageType, Class<TMessage[]> underlyingMessageTypeArray) {
+    public DefaultWampServerProxyBuilder(WampBinding<TMessage> binding) {
         this.binding = binding;
-        this.underlyingMessageType = underlyingMessageType;
-        this.underlyingMessageTypeArray = underlyingMessageTypeArray;
     }
 
     @Override
     public WampServerProxy Create(WampClient<TMessage> client, WampConnection<TMessage> connection) {
-        return new WampServerProxyImpl(client, connection, this.binding, this.underlyingMessageType,
-                this.underlyingMessageTypeArray);
+        return new WampServerProxyImpl(client, connection, this.binding
+        );
     }
 
     private class WampServerProxyImpl extends DefaultWampServerProxy<TMessage> {
@@ -38,17 +34,15 @@ public class DefaultWampServerProxyBuilder<TMessage> implements WampServerProxyB
         private final EventListener<WampMessageArrivedEventArgs<TMessage>> listener;
 
         public WampServerProxyImpl(WampClient<TMessage> client, WampConnection<TMessage> connection,
-                                   WampBinding<TMessage> binding,
-                                   Class<TMessage> underlyingMessageType,
-                                   Class<TMessage[]> underlyingMessageTypeArray) {
-            super(connection, new WampProtocol<TMessage>(underlyingMessageType, binding.getFormatter()));
+                                   WampBinding<TMessage> binding) {
+            super(connection, new WampProtocol<TMessage>(binding.getUnderlyingMessageType(), binding.getFormatter()));
 
             this.client = client;
             this.connection = connection;
 
             this.handler =
                     new DefaultWampClientIncomingMessageHandler<TMessage>
-                    (underlyingMessageType, underlyingMessageTypeArray, binding.getFormatter(), client);
+                    (binding.getUnderlyingMessageType(), binding.getUnderlyingMessageTypeArray(), binding.getFormatter(), client);
 
             listener = new EventListener<WampMessageArrivedEventArgs<TMessage>>() {
                 @Override

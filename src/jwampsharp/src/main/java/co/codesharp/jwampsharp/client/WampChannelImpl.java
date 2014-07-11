@@ -1,5 +1,6 @@
 package co.codesharp.jwampsharp.client;
 
+import co.codesharp.jwampsharp.api.client.WampChannel;
 import co.codesharp.jwampsharp.core.contracts.WampServerProxy;
 import co.codesharp.jwampsharp.core.listener.ControlledWampConnection;
 import co.codesharp.jwampsharp.core.utilities.EventArgs;
@@ -12,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by Elad on 16/04/2014.
  */
-public class WampChannel<TMessage> {
+public class WampChannelImpl<TMessage> implements WampChannel {
     private final ControlledWampConnection<TMessage> connection;
     private final DefaultWampClient<TMessage> client;
     private final WampServerProxy server;
@@ -20,7 +21,7 @@ public class WampChannel<TMessage> {
     private final AtomicBoolean connectCalled = new AtomicBoolean();
     private final EventListener<EventArgs> connectionClosedListener;
 
-    public WampChannel(ControlledWampConnection<TMessage> connection, DefaultWampClient<TMessage> client) {
+    public WampChannelImpl(ControlledWampConnection<TMessage> connection, DefaultWampClient<TMessage> client) {
         this.connection = connection;
         this.client = client;
         server = client.getRealm().getProxy();

@@ -9,24 +9,24 @@ import co.codesharp.jwampsharp.core.listener.ControlledWampConnection;
 /**
  * Created by Elad on 16/04/2014.
  */
-public abstract class WampChannelBuilder<TMessage> {
+public class WampChannelBuilder<TMessage> {
 
     private final WampBinding<TMessage> binding;
     private WampServerProxyBuilder<TMessage> builder;
 
-    public WampChannelBuilder(WampBinding<TMessage> binding, Class<TMessage> messageType, Class<TMessage[]> messageTypeArray) {
+    public WampChannelBuilder(WampBinding<TMessage> binding) {
         this.binding = binding;
-        this.builder = new DefaultWampServerProxyBuilder<TMessage>(binding, messageType, messageTypeArray);
+        this.builder = new DefaultWampServerProxyBuilder<TMessage>(binding);
     }
 
-    public WampChannel<TMessage> createChannel(String realm, ControlledWampConnection<TMessage> connection) {
+    public WampChannelImpl<TMessage> createChannel(String realm, ControlledWampConnection<TMessage> connection) {
 
         WampRealmProxyFactoryImpl wampRealmProxyFactory = new WampRealmProxyFactoryImpl(this, realm, connection);
 
         DefaultWampClient<TMessage> client =
                 new DefaultWampClient<TMessage>(wampRealmProxyFactory);
 
-        return new WampChannel<TMessage>(connection, client);
+        return new WampChannelImpl<TMessage>(connection, client);
     }
 
     private class WampRealmProxyFactoryImpl implements WampRealmProxyFactory<TMessage> {

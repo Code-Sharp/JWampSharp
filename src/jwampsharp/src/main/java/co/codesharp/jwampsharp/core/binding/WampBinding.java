@@ -12,5 +12,9 @@ public interface WampBinding<TMessage> {
     WampMessage<TMessage> getRawMessage(WampMessage<TMessage> message);
 
     WampFormatter<TMessage> getFormatter();
+
+    Class<TMessage> getUnderlyingMessageType();
+
+    Class<TMessage[]> getUnderlyingMessageTypeArray();
 }
 
