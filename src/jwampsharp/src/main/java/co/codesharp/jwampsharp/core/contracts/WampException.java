@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by Elad on 24/05/2014.
  */
-public class WampException extends Exception {
+public class WampException extends RuntimeException {
     private static final Map<String, Object> emptyDetails = Collections.unmodifiableMap(new HashMap<String, Object>());
 
     private final Map<String, Object> details;

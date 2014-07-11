@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: tyrus-spi-1.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.glassfish.tyrus/tyrus-spi/1.4/e19c6af46a16bfc81409954b870281c1c513c430/tyrus-spi-1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.glassfish.tyrus/tyrus-spi/1.4/c1f517bf7092fa87c244d13f8702fe354149e59b/tyrus-spi-1.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

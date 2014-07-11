@@ -39,19 +39,15 @@ public class WampPendingRequest<TMessage, TResult> {
 
     // TODO: Don't repeat yourself
     public void error(TMessage details, String error) {
-        Map<String, Object> deserializedDetails = deserializeMap(details);
-        setError(new WampException(deserializedDetails, error));
+        setError(ErrorExtractor.error(formatter, details, error));
     }
 
     public void error(TMessage details, String error, TMessage[] arguments) {
-        Map<String, Object> deserializedDetails = deserializeMap(details);
-        setError(new WampException(deserializedDetails, error, arguments));
+        setError(ErrorExtractor.error(formatter, details, error, arguments));
     }
 
     public void error(TMessage details, String error, TMessage[] arguments, TMessage argumentsKeywords) {
-        Map<String, Object> deserializedDetails = deserializeMap(details);
-        Map<String, Object> deserializedArgumentsKeywords = deserializeMap(argumentsKeywords);
-        setError(new WampException(deserializedDetails, error, arguments, deserializedArgumentsKeywords));
+        setError(ErrorExtractor.error(formatter, details, error, arguments, argumentsKeywords));
     }
 
     private Map<String, Object> deserializeMap(TMessage details) {
