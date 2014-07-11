@@ -11,6 +11,9 @@ import java.net.URI;
  * Created by Elad on 7/11/2014.
  */
 public class DefaultWampChannelFactory extends WampChannelFactoryImpl {
+
+    private JsonNodeBinding jsonNodeBinding = new JsonNodeBinding();
+
     public <TMessage> WampChannel createChannel
             (URI address,
              String realm,
@@ -23,8 +26,6 @@ public class DefaultWampChannelFactory extends WampChannelFactoryImpl {
 
     public WampChannel createJsonChannel(URI address,
                                           String realm) {
-        JsonNodeBinding binding = new JsonNodeBinding();
-
-        return this.createChannel(address, realm, binding);
+        return this.createChannel(address, realm, jsonNodeBinding);
     }
 }
