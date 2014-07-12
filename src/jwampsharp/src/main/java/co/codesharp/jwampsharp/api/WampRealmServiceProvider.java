@@ -1,5 +1,6 @@
 package co.codesharp.jwampsharp.api;
 
+import co.codesharp.jwampsharp.api.rx.WampSubject;
 import rx.subjects.Subject;
 
 import java.util.concurrent.CompletionStage;

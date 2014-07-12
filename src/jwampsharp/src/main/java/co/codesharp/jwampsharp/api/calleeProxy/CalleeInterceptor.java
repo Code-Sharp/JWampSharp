@@ -3,6 +3,7 @@ package co.codesharp.jwampsharp.api.calleeProxy;
 import co.codesharp.jwampsharp.client.ErrorExtractor;
 import co.codesharp.jwampsharp.client.realm.WampRealmProxy;
 import co.codesharp.jwampsharp.client.rpc.WampRawRpcOperationCallback;
+import co.codesharp.jwampsharp.client.rpc.WampRpcOperationCatalogProxy;
 import co.codesharp.jwampsharp.core.contracts.WampException;
 import co.codesharp.jwampsharp.core.serialization.WampFormatter;
 import co.codesharp.jwampsharp.rpc.CollectionResultTreatment;
@@ -20,10 +21,10 @@ import java.util.concurrent.ExecutionException;
  */
 public class CalleeInterceptor implements InvocationHandler {
 
-    private final WampRealmProxy proxy;
+    private final WampRpcOperationCatalogProxy proxy;
     private HashMap<String, Object> emptyOptions = new HashMap<String, Object>();
 
-    public CalleeInterceptor(WampRealmProxy proxy) {
+    public CalleeInterceptor(WampRpcOperationCatalogProxy proxy) {
         this.proxy = proxy;
     }
 
@@ -83,7 +84,7 @@ public class CalleeInterceptor implements InvocationHandler {
         WampProcedure annotation = method.getAnnotation(WampProcedure.class);
         String procedureUri = annotation.value();
 
-        this.proxy.getRpcCatalog().invoke(callback,
+        this.proxy.invoke(callback,
                 emptyOptions,
                 procedureUri,
                 args);

@@ -1,6 +1,9 @@
 package co.codesharp.jwampsharp.api;
 
 import co.codesharp.jwampsharp.api.calleeProxy.CalleeProxyFactory;
+import co.codesharp.jwampsharp.api.rx.WampSubject;
+import co.codesharp.jwampsharp.api.rx.WampTopicExtensions;
+import co.codesharp.jwampsharp.client.pubSub.WampTopicProxy;
 import co.codesharp.jwampsharp.client.realm.WampRealmProxy;
 import rx.subjects.Subject;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -16,7 +19,7 @@ public class WampRealmProxyServiceProvider implements co.codesharp.jwampsharp.ap
 
     public WampRealmProxyServiceProvider(WampRealmProxy realmProxy) {
         this.proxy = realmProxy;
-        this.proxyFactory = new CalleeProxyFactory(realmProxy);
+        this.proxyFactory = new CalleeProxyFactory(realmProxy.getRpcCatalog());
     }
 
     @Override
@@ -30,12 +33,16 @@ public class WampRealmProxyServiceProvider implements co.codesharp.jwampsharp.ap
     }
 
     @Override
-    public <TEvent> Subject<TEvent, TEvent> GetSubject(Class<TEvent> tEventClass, String topicUri) {
-        throw new NotImplementedException();
+    public <TEvent> Subject<TEvent, TEvent> GetSubject(Class<TEvent> eventClass, String topicUri) {
+        WampTopicProxy topic = this.proxy.getTopicContainer().getTopic(topicUri);
+        Subject<TEvent, TEvent> result = WampTopicExtensions.toSubject(eventClass, topic);
+        return result;
     }
 
     @Override
     public WampSubject GetSubject(String topicUri) {
-        throw new NotImplementedException();
+        WampTopicProxy topic = this.proxy.getTopicContainer().getTopic(topicUri);
+        WampSubject subject = WampTopicExtensions.toSubject(topic);
+        return subject;
     }
 }

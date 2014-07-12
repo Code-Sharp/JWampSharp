@@ -1,6 +1,6 @@
 package co.codesharp.jwampsharp.api.calleeProxy;
 
-import co.codesharp.jwampsharp.client.realm.WampRealmProxy;
+import co.codesharp.jwampsharp.client.rpc.WampRpcOperationCatalogProxy;
 
 import java.lang.reflect.Proxy;
 
@@ -8,10 +8,10 @@ import java.lang.reflect.Proxy;
  * Created by Elad on 7/11/2014.
  */
 public class CalleeProxyFactory {
-    private final WampRealmProxy realmProxy;
+    private final WampRpcOperationCatalogProxy catalogProxy;
 
-    public CalleeProxyFactory(WampRealmProxy realmProxy){
-        this.realmProxy = realmProxy;
+    public CalleeProxyFactory(WampRpcOperationCatalogProxy catalogProxy){
+        this.catalogProxy = catalogProxy;
     }
 
 
@@ -21,7 +21,7 @@ public class CalleeProxyFactory {
                 (TProxy)
                 Proxy.newProxyInstance(proxyClass.getClassLoader(),
                         new Class[]{proxyClass},
-                        new CalleeInterceptor(this.realmProxy));
+                        new CalleeInterceptor(this.catalogProxy));
 
         return result;
     }
