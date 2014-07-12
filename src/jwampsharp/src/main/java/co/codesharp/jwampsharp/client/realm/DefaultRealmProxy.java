@@ -1,5 +1,6 @@
 package co.codesharp.jwampsharp.client.realm;
 
+import co.codesharp.jwampsharp.api.WampRealmProxyServiceProvider;
 import co.codesharp.jwampsharp.api.WampRealmServiceProvider;
 import co.codesharp.jwampsharp.client.pubSub.DefaultWampTopicContainerProxy;
 import co.codesharp.jwampsharp.client.pubSub.WampTopicContainerProxy;
@@ -19,6 +20,7 @@ public class DefaultRealmProxy<TMessage> implements WampRealmProxy {
     private final WampBinding<TMessage> binding;
     private final WampRpcOperationCatalogProxy rpcCatalog;
     private final WampTopicContainerProxy topicContainer;
+    private final WampRealmServiceProvider services;
 
     public DefaultRealmProxy(String name, WampServerProxy proxy, WampBinding<TMessage> binding) {
         this.name = name;
@@ -27,6 +29,7 @@ public class DefaultRealmProxy<TMessage> implements WampRealmProxy {
         WampFormatter<TMessage> formatter = binding.getFormatter();
         rpcCatalog = new DefaultWampRpcOperationCatalogProxy<TMessage>(proxy, formatter);
         topicContainer = new DefaultWampTopicContainerProxy(proxy, formatter);
+        services = new WampRealmProxyServiceProvider(this);
     }
 
     @Override
@@ -51,8 +54,7 @@ public class DefaultRealmProxy<TMessage> implements WampRealmProxy {
 
     @Override
     public WampRealmServiceProvider getServices() {
-        // TODO
-        return null;
+        return services;
     }
 
     @Override

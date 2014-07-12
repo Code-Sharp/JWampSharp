@@ -8,12 +8,8 @@ import co.codesharp.jwampsharp.core.serialization.WampFormatter;
 import co.codesharp.jwampsharp.rpc.CollectionResultTreatment;
 import co.codesharp.jwampsharp.rpc.WampProcedure;
 import co.codesharp.jwampsharp.rpc.WampResult;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -50,7 +46,14 @@ public class CalleeInterceptor implements InvocationHandler {
             return task.toCompletableFuture().get();
         } catch (ExecutionException ex) {
             Throwable cause = ex.getCause();
-            throw new RuntimeException(cause.getMessage(), cause);
+
+            if (cause instanceof RuntimeException) {
+                throw ((RuntimeException) cause);
+            } else {
+                throw new RuntimeException(cause.getMessage(), cause);
+            }
+        } catch (RuntimeException ex) {
+            throw ex;
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
@@ -64,14 +67,14 @@ public class CalleeInterceptor implements InvocationHandler {
     }
 
     private Class<?> getTaskGenericParameterType(Type taskType) {
-        Class<?> result = (Class<?>) ((ParameterizedTypeImpl) taskType).getActualTypeArguments()[0];
+        Class<?> result = (Class<?>) ((ParameterizedType) taskType).getActualTypeArguments()[0];
         return result;
     }
 
     private CompletionStage<?> innerHandleAsync(Method method, Object[] args, Class<?> returnType) {
         Callback callback;
 
-        if (multivaluedResult(method, returnType)) {
+        if (hasMultivaluedResult(method, returnType)) {
             callback = new MultiValueCallback(returnType);
         } else {
             callback = new SingleValueCallback(returnType);
@@ -88,7 +91,7 @@ public class CalleeInterceptor implements InvocationHandler {
         return callback.getTask();
     }
 
-    private boolean multivaluedResult(Method method, Class<?> returnType) {
+    private boolean hasMultivaluedResult(Method method, Class<?> returnType) {
         if (!returnType.isArray()) {
             return false;
         }
