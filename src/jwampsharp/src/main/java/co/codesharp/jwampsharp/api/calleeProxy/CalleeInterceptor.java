@@ -98,7 +98,7 @@ public class CalleeInterceptor implements InvocationHandler {
 
         WampResult resultType = method.getAnnotation(WampResult.class);
 
-        if ((resultType == null) ||
+        if ((resultType != null) &&
             (resultType.value() == CollectionResultTreatment.MULTIVALUED)) {
             return true;
         }
