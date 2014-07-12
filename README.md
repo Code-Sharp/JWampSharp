@@ -5,7 +5,7 @@ A Java implementation of [WAMPv2 (The Web Application Messaging Protocol)][WampL
 
 A Java port of [WampSharp][WampSharpLink]
 
-Currently still in development. See caller role example in jwampsharp.samples.caller directory.
+Currently still in development. See caller and subscriber roles examples in jwampsharp.samples directory.
 
 Master | Provider
 ------ | --------
