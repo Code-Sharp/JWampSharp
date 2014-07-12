@@ -9,6 +9,7 @@ import co.codesharp.jwampsharp.samples.caller.manualProxy.ArgumentsServiceProxy;
 
 import java.net.URI;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Elad on 7/11/2014.
@@ -23,6 +24,8 @@ public class Program {
                     factory.createJsonChannel(new URI("ws://127.0.0.1:8080/ws"), "realm1");
 
             CompletionStage open = channel.open();
+
+            open.toCompletableFuture().get(5000, TimeUnit.MILLISECONDS);
 
             WampRealmServiceProvider services = channel.getRealmProxy().getServices();
 

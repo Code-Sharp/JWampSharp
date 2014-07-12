@@ -33,14 +33,14 @@ public class WampRealmProxyServiceProvider implements co.codesharp.jwampsharp.ap
     }
 
     @Override
-    public <TEvent> Subject<TEvent, TEvent> GetSubject(Class<TEvent> eventClass, String topicUri) {
+    public <TEvent> Subject<TEvent, TEvent> getSubject(Class<TEvent> eventClass, String topicUri) {
         WampTopicProxy topic = this.proxy.getTopicContainer().getTopic(topicUri);
         Subject<TEvent, TEvent> result = WampTopicExtensions.toSubject(eventClass, topic);
         return result;
     }
 
     @Override
-    public WampSubject GetSubject(String topicUri) {
+    public WampSubject getSubject(String topicUri) {
         WampTopicProxy topic = this.proxy.getTopicContainer().getTopic(topicUri);
         WampSubject subject = WampTopicExtensions.toSubject(topic);
         return subject;

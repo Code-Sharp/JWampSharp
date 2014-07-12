@@ -14,7 +14,7 @@ public interface WampRealmServiceProvider {
 
     <TProxy> TProxy getCalleeProxy(Class<TProxy> proxyClass);
 
-    <TEvent> Subject<TEvent, TEvent> GetSubject(Class<TEvent> eventClass, String topicUri);
+    <TEvent> Subject<TEvent, TEvent> getSubject(Class<TEvent> eventClass, String topicUri);
 
-    WampSubject GetSubject(String topicUri);
+    WampSubject getSubject(String topicUri);
 }

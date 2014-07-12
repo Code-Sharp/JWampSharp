@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/JWampSharp.iml" filepath="$PROJECT_DIR$/JWampSharp.iml" />
       <module fileurl="file://$PROJECT_DIR$/jwampsharp/jwampsharp.iml" filepath="$PROJECT_DIR$/jwampsharp/jwampsharp.iml" />
       <module fileurl="file://$PROJECT_DIR$/jwampsharp.defaultBinding/jwampsharp.defaultBinding.iml" filepath="$PROJECT_DIR$/jwampsharp.defaultBinding/jwampsharp.defaultBinding.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jwampsharp.samples.caller/jwampsharp.samples.caller.iml" filepath="$PROJECT_DIR$/jwampsharp.samples.caller/jwampsharp.samples.caller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jwampsharp.samples/jwampsharp.samples.iml" filepath="$PROJECT_DIR$/jwampsharp.samples/jwampsharp.samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/jwampsharp.testConsole/jwampsharp.testConsole.iml" filepath="$PROJECT_DIR$/jwampsharp.testConsole/jwampsharp.testConsole.iml" />
     </modules>
   </component>

@@ -3,4 +3,4 @@ include 'jwampsharp'
 
 include 'jwampsharp.defaultBinding'
 
-include 'jwampsharp.samples.caller'
+include 'jwampsharp.samples'

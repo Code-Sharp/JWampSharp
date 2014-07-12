@@ -2,6 +2,8 @@ package co.codesharp.jwampsharp.api.rx;
 
 import co.codesharp.jwampsharp.api.serialization.SerializedValue;
 import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
 import rx.subjects.Subject;
 import rx.util.functions.Func1;
 
@@ -29,6 +31,11 @@ class WampEventSubject<TEvent> extends Subject<TEvent, TEvent> {
                 return serializedEvent.getArguments()[0].deserialize(eventType);
             }
         });
+    }
+
+    @Override
+    public Subscription subscribe(Observer<? super TEvent> observer) {
+        return this.observable.subscribe(observer);
     }
 
     @Override
