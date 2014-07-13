@@ -1,5 +1,6 @@
 package co.codesharp.jwampsharp.core.dispatch;
 
+import co.codesharp.jwampsharp.core.binding.WampBinding;
 import co.codesharp.jwampsharp.core.contracts.WampServer;
 import co.codesharp.jwampsharp.core.serialization.WampFormatter;
 import co.codesharp.jwampsharp.core.contracts.WampClientProxy;
@@ -21,6 +22,10 @@ public class DefaultWampServerIncomingMessageHandler<TMessage> implements WampSe
         this.messageArrayClass = messageArrayClass;
         this.formatter = formatter;
         this.server = server;
+    }
+
+    public DefaultWampServerIncomingMessageHandler(WampBinding<TMessage> binding, WampServer<TMessage> server) {
+        this(binding.getUnderlyingMessageType(), binding.getUnderlyingMessageTypeArray(), binding.getFormatter(), server);
     }
 
     @Override

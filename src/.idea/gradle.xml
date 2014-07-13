@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/jwampsharp" />
             <option value="$PROJECT_DIR$/jwampsharp.defaultBinding" />
             <option value="$PROJECT_DIR$/jwampsharp.samples" />
+            <option value="$PROJECT_DIR$/jwampsharp.tests" />
           </set>
         </option>
       </GradleProjectSettings>

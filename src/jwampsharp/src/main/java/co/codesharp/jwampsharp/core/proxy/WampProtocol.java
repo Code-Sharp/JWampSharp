@@ -1,5 +1,6 @@
 package co.codesharp.jwampsharp.core.proxy;
 
+import co.codesharp.jwampsharp.core.binding.WampBinding;
 import co.codesharp.jwampsharp.core.message.WampMessage;
 import co.codesharp.jwampsharp.core.message.WampMessageType;
 import co.codesharp.jwampsharp.core.serialization.WampFormatter;
@@ -18,6 +19,10 @@ public class WampProtocol<TMessage> {
                         WampFormatter<TMessage> formatter) {
         this.underlyingMessageType = underlyingMessageType;
         this.formatter = formatter;
+    }
+
+    public WampProtocol(WampBinding<TMessage> binding) {
+        this(binding.getUnderlyingMessageType(), binding.getFormatter());
     }
 
     public WampMessage<TMessage> challenge(String challenge, Object extra) {

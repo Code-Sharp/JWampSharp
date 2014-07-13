@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * Created by Elad on 15/04/2014.
  */
 public class JsonNodeBinding extends JsonBinding<JsonNode> {
-    protected JsonNodeBinding() {
+    public JsonNodeBinding() {
         super(new JsonNodeFormatter(), new JsonNodeMessageParser());
     }
 
